@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "The-Ministry-of-Truth-at-Work"
+title:  "The Ministry of Truth at Work"
 date:   2025-04-09 10:00:00 +0100
 ---
 
