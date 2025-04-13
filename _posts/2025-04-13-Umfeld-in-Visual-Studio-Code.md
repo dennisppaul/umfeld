@@ -4,6 +4,8 @@ title:  "Umfeld in Visual Studio Code"
 date:   2025-04-13 18:00:00 +0100
 ---
 
+![2025-04-13-Umfeld-in-Visual-Studio-Code](/assets/2025-04-13-Umfeld-in-Visual-Studio-Code.png)
+
 to run an *Umfeld* application as a *CMake* project in Visual Studio Code ( VS Code ), follow these steps:
 
 ## install prerequisites
