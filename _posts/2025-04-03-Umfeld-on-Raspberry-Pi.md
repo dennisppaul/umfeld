@@ -4,7 +4,7 @@ title:  "Umfeld on Raspberry Pi"
 date:   2025-04-03 10:00:00 +0100
 ---
 
-![2025-04-03-Umfeld-on-Raspberry-Pi.gif](/assets/2025-04-03-Umfeld-on-Raspberry-Pi.gif)
+![2025-04-03-Umfeld-on-Raspberry-Pi.gif](/assets/2025-04-03-Umfeld-on-Raspberry-Pi.gif){: style="width:100%;" }
 
 so this is exciting! Umfeld can run on a Raspberry Pi 4 Model B or Raspberry Pi 5.
 
@@ -22,7 +22,7 @@ however, it has not been tested carefully. there might be glitches …
 
 PS RPI does not support antialiasing i.e make sure to set the value to `0` in `settings`:
 
-```cpp
+```c++
 void settings(){
     antialiasing = 0;
 }

@@ -4,11 +4,11 @@ title:  "Control Control Control"
 date:   2025-04-12 10:00:00 +0100
 ---
 
-![2025-04-12-Control-Control-Control](/assets/2025-04-12-Control-Control-Control.gif)
+![2025-04-12-Control-Control-Control](/assets/2025-04-12-Control-Control-Control.gif){: style="width:100%;" }
 
 *Umfeld* can now handle gamepads. just enable them in `settings()` and implement the callbacks:
 
-```C
+```c++
 void settings() {  
     enable_gamepads();  
 }  
