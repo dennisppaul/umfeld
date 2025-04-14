@@ -13,14 +13,16 @@ void settings() {
     enable_gamepads();  
 }  
   
-void gamepadAxis(const int id, const int axis, const float value) {  
+void gamepad_axis(const int id, const int axis, const float value) {  
     // ...  
 }  
   
-void gamepadButton(const int id, const int button, const bool down) {  
+void gamepad_button(const int id, const int button, const bool down) {  
     // ...  
 }
 ```
+
+( note, renamed methods to all lower case on 2025-04-14 )
 
 i have tested this with *Nintendo Joy-Cons* and an *Microsoft XBox One* controller on macOS. note, that controllers need to be connected as bluetooth devices in the OS first. 
 
