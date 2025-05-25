@@ -16,7 +16,7 @@ to run an *Umfeld* application as a *CMake* project in Visual Studio Code ( VS C
     
 ## open your project folder
 
-open the root folder of your cmake project ( the one containing the `CMakeLists.txt` ) in VS Code ( e.g `./umgebung-examples/Basics/minimal` ).
+open the root folder of your cmake project ( the one containing the `CMakeLists.txt` ) in VS Code ( e.g `./umfeld-examples/Basics/minimal` ).
 
 ## configure the project
 
