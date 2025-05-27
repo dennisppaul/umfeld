@@ -2,14 +2,16 @@ name: Daily GitHub Pages Rebuild
 
 on:
   schedule:
-    - cron: '0 8 * * *'   # Runs daily at 8:00 UTC
-  workflow_dispatch:      # Allows manual triggering
+    - cron: '0 8 * * *'   # runs daily at 08:00 UTC
+  workflow_dispatch:      # allows manual triggering from GitHub UI
 
 jobs:
   rebuild:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger GitHub Pages build
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/pages/builds
+          curl -X POST -H "Authorization: token $GH_TOKEN" \
+               https://api.github.com/repos/${{ github.repository }}/pages/builds
