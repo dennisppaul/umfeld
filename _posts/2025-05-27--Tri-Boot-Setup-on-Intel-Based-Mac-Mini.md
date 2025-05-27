@@ -83,4 +83,4 @@ how to setup macOS(v15.5), Ubuntu(24.04) and Windows(10) on a single intel-based
     - to select Ubuntu just re-boot without pressing any key ( *GRUB menu* will appear )
     - to select Windows either way works
 
-NOTE: this process might work on other Macintosh machines as long as they are intel-based Macintosch.
+NOTE: this process might work on other Macintosh machines as long as they are intel-based Macintosh.
