@@ -4,6 +4,8 @@ title:  "Tri-Boot Setup on Intel-Based Mac Mini"
 date:   2025-05-27 10:00:00 +0100
 ---
 
+how to setup macOS(v15.5), Ubuntu(24.04) and Windows(10) on an intel-based Mac Mini on the same internal SSD.
+
 in order to test *Umfeld* better on 3 different Operating Systems ( macOS, Ubuntu Linux, and Windows ) i prepared a cup of coffee and took on the challenge to install all 3 onto a single intel-based Mac Mini. it took me a few detours but it sort of works now. the Operating Systems selection process is still a bit quirky … but they all three run natively.
 
 and yes i did consider using virtual environments ( e.g [UTM](https://getutm.app) which is pretty nice ) but it turns out that even there the ARM architecture of my MacBook Pro M3 ( i.e *Apple Silicon* ) prooved to be stubborn … again. e.g no FFmpeg version beyond 4 is available with `apt` on Ubuntu and on Windows `MSYS UCRT64` installer does not even start …
