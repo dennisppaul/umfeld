@@ -27,6 +27,8 @@ after that, i was able to compile and run the minimal sketch in fullscreen at *1
 
 however, this is just a proof of concept* and i am not sure if this is production-ready. i only tested the `minimal` example. the whole process took *forever*; installing packages, compiling SDL3, and building a sketch for the first time easily took *7–8 hours* ( i didn’t time it exactly ). after that recompilimg just the sketch still required approx. 3 min.
 
+if you want to try it out, i have released a working ISO image at [http://dm-hb.de/umfeld-rpi-32](http://dm-hb.de/umfeld-rpi-32)
+
 ### What’s Next?
 
 i haven’t tested KMSDRM yet. it might work, but would likely require switching from desktop *OpenGL 2.0* to an *OpenGL ES 2.0* backend ( and *Umfeld* currently defaults to the former ).
