@@ -42,21 +42,21 @@ endif (APPLE)
 ##########################################################################################################
 ### CHECK FOR MACPORTS                                                                                 ###
 ##########################################################################################################
-if (APPLE AND NOT BREW_FOUND)
-    if (EXISTS "/opt/local/bin/port")
-        message(STATUS "MACPORTS found, setting paths.")
-        # 1. MacPorts 라이브러리 경로를 link_directories에 추가
-        link_directories("/opt/local/lib")
+if (APPLE AND EXISTS "/opt/local/bin/port")
+    message(STATUS "MACPORTS found, setting paths.")
+    # 1. Add MacPorts library path to link_directories
+    link_directories("/opt/local/lib")
 
-        # 2. pkg-config가 MacPorts 라이브러리를 찾을 수 있도록 환경 변수 설정
-        set(ENV{PKG_CONFIG_PATH} "/opt/local/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+    # 2. Set environment variable so pkg-config can find MacPorts libraries
+    set(ENV{PKG_CONFIG_PATH} "/opt/local/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
 
-        # 참고: MacPorts 헤더 파일 경로 추가
-        include_directories("/opt/local/include")
-    else()
+    # Note: Add MacPorts header file path
+    include_directories("/opt/local/include")
+else()
+    if (APPLE AND NOT BREW_FOUND)
         message(WARNING "Neither HOMEBREW nor MACPORTS found. Build may fail.")
     endif()
-endif(APPLE AND NOT BREW_FOUND)
+endif()
 
 ##########################################################################################################
 ### SUPPLEMENT LIBRARY SEARCH PATH                                                                     ###
@@ -562,6 +562,16 @@ function(add_umfeld_libs)
     set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_link_libraries(${PROJECT_NAME} PRIVATE umfeld-lib-interface)
     target_link_libraries(${PROJECT_NAME} PRIVATE umfeld-lib)
+
+    # Add library search paths for macOS package managers
+    if (APPLE)
+        if (HOMEBREW_LIB_PATH)
+            target_link_directories(${PROJECT_NAME} PRIVATE ${HOMEBREW_LIB_PATH})
+        endif ()
+        if (EXISTS "/opt/local/bin/port")
+            target_link_directories(${PROJECT_NAME} PRIVATE "/opt/local/lib")
+        endif ()
+    endif ()
 
     # pffft SIMD detection
     # TODO maybe make this more platform specific?
