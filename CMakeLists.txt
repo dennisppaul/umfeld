@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.20)
 
 project(umfeld-lib)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 message(STATUS "----------------------------------------")
 message(STATUS "UMFELD LIBRARY")
 message(STATUS "----------------------------------------")
@@ -35,6 +38,25 @@ if (APPLE)
         message(WARNING "HOMEBREW not found.")
     endif ()
 endif (APPLE)
+
+##########################################################################################################
+### CHECK FOR MACPORTS                                                                                 ###
+##########################################################################################################
+if (APPLE AND NOT BREW_FOUND)
+    if (EXISTS "/opt/local/bin/port")
+        message(STATUS "MACPORTS found, setting paths.")
+        # 1. MacPorts 라이브러리 경로를 link_directories에 추가
+        link_directories("/opt/local/lib")
+
+        # 2. pkg-config가 MacPorts 라이브러리를 찾을 수 있도록 환경 변수 설정
+        set(ENV{PKG_CONFIG_PATH} "/opt/local/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+
+        # 참고: MacPorts 헤더 파일 경로 추가
+        include_directories("/opt/local/include")
+    else()
+        message(WARNING "Neither HOMEBREW nor MACPORTS found. Build may fail.")
+    endif()
+endif(APPLE AND NOT BREW_FOUND)
 
 ##########################################################################################################
 ### SUPPLEMENT LIBRARY SEARCH PATH                                                                     ###
