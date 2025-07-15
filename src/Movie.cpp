@@ -310,7 +310,11 @@ bool Movie::available() {
 #endif
                 }
 
+#if LIBAVUTIL_VERSION_MAJOR >= 57
                 int channels    = audioCodecContext->ch_layout.nb_channels;
+#else
+                int channels    = audioCodecContext->channels;
+#endif
                 int out_samples = av_rescale_rnd(
                     swr_get_delay(swrCtx, frame->sample_rate) + frame->nb_samples,
                     frame->sample_rate, frame->sample_rate, AV_ROUND_UP);
@@ -331,10 +335,14 @@ bool Movie::available() {
                 // Process the float audio samples
                 // process_audio_samples(output_buffer, samples_converted, frame->ch_layout.nb_channels);
                 // std::cout << "+++ audio samples : " << samples_converted << std::endl;
-                // std::cout << "+++       channels: " << frame->ch_layout.nb_channels << std::endl;
+                // std::cout << "+++       channels: " << frame->channels << std::endl;
 
                 if (fListener) {
+#if LIBAVUTIL_VERSION_MAJOR >= 57
                     fListener->movieAudioEvent(this, output_buffer, samples_converted, frame->ch_layout.nb_channels);
+#else
+                    fListener->movieAudioEvent(this, output_buffer, samples_converted, frame->channels);
+#endif
                 }
 
                 // Free the output buffer
