@@ -497,10 +497,10 @@ if (NOT DISABLE_GRAPHICS)
     target_include_directories(${PROJECT_NAME} PUBLIC ${FREETYPE_INCLUDE_DIRS})
     # FFMPEG
     if (NOT DISABLE_VIDEO)
-        target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
-        target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
+        target_include_directories(umfeld-lib PUBLIC ${FFMPEG_INCLUDE_DIRS})
+        target_link_libraries(umfeld-lib PUBLIC ${FFMPEG_LIBRARIES})
         if (APPLE)
-            target_link_libraries(${PROJECT_NAME} PUBLIC
+            target_link_libraries(umfeld-lib PUBLIC
                     "-framework AVFoundation"
                     "-framework Foundation"
                     "-framework CoreMedia"
