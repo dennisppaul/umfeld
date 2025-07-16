@@ -222,6 +222,7 @@ namespace umfeld {
     float    hue(uint32_t color);
     float    saturation(uint32_t color);
     uint32_t lerpColor(uint32_t c1, uint32_t c2, float amt);
+    void     rgb_to_hsb(const float r, const float g, const float b, float& h, float& s, float& v);
 
     // ## Environment
 
