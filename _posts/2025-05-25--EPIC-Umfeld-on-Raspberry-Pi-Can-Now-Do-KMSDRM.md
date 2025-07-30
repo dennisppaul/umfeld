@@ -14,5 +14,17 @@ is what ChatGPT says … in other words: a nice, lightweight, high-performance w
 
 i am extremely excited about this. on the one hand, this was one of the initial reasons to start *Umfeld* in the first place [^2] and on the other hand, i feel it’s also a small-technology-style statement: thin linux distribution + umfeld application … perfection!
 
+a few notes for this to work:
+
+1. `SDL3` must be compiled with the KMSDRM backend enabled:
+    ```sh
+    cmake -B build -DSDL_VIDEO_KMSDRM=ON ...
+    ```
+2. if need be force the driver via environment variables before runnning the application:
+    ```sh
+    export SDL_VIDEODRIVER=kmsdrm
+    export SDL_RENDER_DRIVER=opengles2
+    ```
+
 [^1]: at least to me ;)
 [^2]: ever tried running Processing (java-based or javascript) on a Raspberry Pi? … it is SLOW!

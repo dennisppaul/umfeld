@@ -1,1 +1,1 @@
-*Umfeld* is a C++ environment for audio and graphics based applications. it is inspired by [Processing.org](https://processing.org) and similar environments.
+[Umfeld](https://github.com/dennisppaul/umfeld) is a C++ environment for audio and graphics based applications. it is inspired by [Processing.org](https://processing.org) and similar environments.
