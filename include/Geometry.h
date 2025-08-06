@@ -515,7 +515,7 @@ namespace umfeld {
                 s.next_position = glm::vec2(line_strip[ii].x, line_strip[ii].y);
             }
             s.direction = s.next_position - s.position;
-            if (s.direction.x * s.direction.x + s.direction.y + s.direction.y > 0.0001f * 0.0001f) {
+            if (s.direction.x * s.direction.x + s.direction.y * s.direction.y > 0.0001f * 0.0001f) {
                 s.direction = glm::normalize(s.direction);
                 s.normal    = glm::vec2(-s.direction.y, s.direction.x);
             } else {
