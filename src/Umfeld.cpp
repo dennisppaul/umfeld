@@ -28,16 +28,17 @@
 
 using namespace std::chrono;
 
-UMFELD_FUNC_WEAK void arguments(const std::vector<std::string>& args) { LOG_CALLBACK_MSG("default arguments"); }
-UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
-UMFELD_FUNC_WEAK void setup() { LOG_CALLBACK_MSG("default setup"); }
-UMFELD_FUNC_WEAK void draw() { LOG_CALLBACK_MSG("default draw"); }
-UMFELD_FUNC_WEAK void update() { LOG_CALLBACK_MSG("default update"); }
-UMFELD_FUNC_WEAK void windowResized(int width, int height) { LOG_CALLBACK_MSG("default windowResized"); }
-UMFELD_FUNC_WEAK void post() { LOG_CALLBACK_MSG("default post"); }
-UMFELD_FUNC_WEAK void shutdown() { LOG_CALLBACK_MSG("default shutdown"); }
-
 namespace umfeld {
+
+    UMFELD_FUNC_WEAK void arguments(const std::vector<std::string>& args) { LOG_CALLBACK_MSG("default arguments"); }
+    UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
+    UMFELD_FUNC_WEAK void setup() { LOG_CALLBACK_MSG("default setup"); }
+    UMFELD_FUNC_WEAK void draw() { LOG_CALLBACK_MSG("default draw"); }
+    UMFELD_FUNC_WEAK void update() { LOG_CALLBACK_MSG("default update"); }
+    UMFELD_FUNC_WEAK void windowResized(int width, int height) { LOG_CALLBACK_MSG("default windowResized"); }
+    UMFELD_FUNC_WEAK void post() { LOG_CALLBACK_MSG("default post"); }
+    UMFELD_FUNC_WEAK void shutdown() { LOG_CALLBACK_MSG("default shutdown"); }
+
     static high_resolution_clock::time_point lastFrameTime                       = {};
     static bool                              initialized                         = false;
     static double                            target_frame_duration               = 1.0 / frameRate;
@@ -180,7 +181,7 @@ static void handle_arguments(const int argc, char* argv[]) {
             args.emplace_back(argv[i]);
         }
     }
-    arguments(args);
+    umfeld::arguments(args);
 }
 
 static uint32_t compile_subsystems_flag() {
@@ -222,7 +223,7 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
                     ".", umfeld::VERSION_PATCH);
     umfeld::console(umfeld::separator(false));
     handle_arguments(argc, argv);
-    settings();
+    umfeld::settings();
 
     /* create/check graphics subsystem */
     if (umfeld::enable_graphics) {
@@ -487,7 +488,7 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
         umfeld::audio_threaded           = umfeld::a->threaded;
     }
 
-    setup();
+    umfeld::setup();
 
     /* - setup_post */
 
@@ -509,7 +510,7 @@ static void handle_event(const SDL_Event& event, bool& app_is_running) {
         case SDL_EVENT_WINDOW_RESIZED:
             // // TODO implement window resize … how will the subsystems be updated?
             umfeld::warning("TODO window resized. subsystem needs to be update …");
-            windowResized(-1, -1);
+            umfeld::windowResized(-1, -1);
             break;
         case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
             // // TODO implement
@@ -563,7 +564,7 @@ static void handle_draw() {
         }
     }
 
-    draw();
+    umfeld::draw();
 
     for (const umfeld::Subsystem* subsystem: umfeld::subsystems) {
         if (subsystem != nullptr) {
@@ -579,7 +580,7 @@ static void handle_draw() {
         }
     }
 
-    post();
+    umfeld::post();
 }
 
 SDL_AppResult SDL_AppIterate(void* appstate) {
@@ -606,7 +607,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
             }
         }
 
-        update();
+        umfeld::update();
 
         if (frame_duration >= umfeld::target_frame_duration) {
             handle_draw();
@@ -680,6 +681,6 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
 
     umfeld::subsystems.clear();
 
-    shutdown();
+    umfeld::shutdown();
     SDL_Quit();
 }
