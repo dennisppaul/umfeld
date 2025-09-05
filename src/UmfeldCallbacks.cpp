@@ -32,6 +32,12 @@ void umfeld::callback_audioEvent() {
 }
 
 // TODO new callback mechanism
+// TODO add functions:
+//      - `arguments()`
+//      - `setup()`
+//      - `draw()`
+//      - `update()`
+//      - `shutdown()`
 
 namespace umfeld {
     namespace {

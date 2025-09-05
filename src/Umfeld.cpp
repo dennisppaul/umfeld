@@ -28,17 +28,27 @@
 
 using namespace std::chrono;
 
+#if UMFELD_SET_DEFAULT_CALLBACK
+// NOTE provide weak callback implementation if default callbacks are used.
+//      this mechanism is kept to a minimum for now limited to a set functions e.g:
+//      - `settings()`
+//      - `arguments()`
+//      - `setup()`
+//      - `draw()`
+//      - `update()`
+//      - `shutdown()`
 UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
+UMFELD_FUNC_WEAK void arguments(const std::vector<std::string>& args) { LOG_CALLBACK_MSG("default arguments"); }
+UMFELD_FUNC_WEAK void setup() { LOG_CALLBACK_MSG("default setup"); }
+UMFELD_FUNC_WEAK void draw() { LOG_CALLBACK_MSG("default draw"); }
+UMFELD_FUNC_WEAK void update() { LOG_CALLBACK_MSG("default update"); }
+UMFELD_FUNC_WEAK void shutdown() { LOG_CALLBACK_MSG("default shutdown"); }
+#endif
 
 namespace umfeld {
 
-    UMFELD_FUNC_WEAK void arguments(const std::vector<std::string>& args) { LOG_CALLBACK_MSG("default arguments"); }
-    UMFELD_FUNC_WEAK void setup() { LOG_CALLBACK_MSG("default setup"); }
-    UMFELD_FUNC_WEAK void draw() { LOG_CALLBACK_MSG("default draw"); }
-    UMFELD_FUNC_WEAK void update() { LOG_CALLBACK_MSG("default update"); }
     UMFELD_FUNC_WEAK void windowResized(int width, int height) { LOG_CALLBACK_MSG("default windowResized"); }
     UMFELD_FUNC_WEAK void post() { LOG_CALLBACK_MSG("default post"); }
-    UMFELD_FUNC_WEAK void shutdown() { LOG_CALLBACK_MSG("default shutdown"); }
 
     static high_resolution_clock::time_point lastFrameTime                       = {};
     static bool                              initialized                         = false;
@@ -208,6 +218,13 @@ static uint32_t compile_subsystems_flag() {
 SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
 
 #if UMFELD_SET_DEFAULT_CALLBACK
+    // TODO new callback mechanism
+    // TODO add functions:
+    //      - `arguments()`
+    //      - `setup()`
+    //      - `draw()`
+    //      - `update()`
+    //      - `shutdown()`
     umfeld::callback_settings_set(settings);
 #else
     umfeld_set_callbacks();

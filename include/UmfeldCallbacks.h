@@ -26,23 +26,43 @@
 #include "PAudio.h"
 
 void umfeld_set_callbacks();
+
+// TODO new callback mechanism
+// TODO add functions:
+//      - `arguments()`
+//      - `setup()`
+//      - `draw()`
+//      - `update()`
+//      - `shutdown()`
 void settings();
+void arguments(const std::vector<std::string>& args);
+void setup();
+void draw();
+void update();
+void shutdown();
 
 namespace umfeld {
+    // TODO new callback mechanism
+    // TODO add functions:
+    //      - `arguments()`
+    //      - `setup()`
+    //      - `draw()`
+    //      - `update()`
+    //      - `shutdown()`
     using VoidFn = void();
     void callback_settings_set(VoidFn* f);
     void callback_settings_call();
+    // TODO decide on naming scheme for callbacks
+    void set_callback_setup(VoidFn* f);
+    void call_callback_setup();
+    void set_setup_callback(VoidFn* f);
+    void call_setup_callback();
+    // TODO ...
 
     /* NOTE weak implementations in `Umfeld.cpp` */
-    void arguments(const std::vector<std::string>& args);
-    // void settings();
-    void setup();
-    void draw();
-    void update();
     void windowResized(int width, int height);
     void post();
-    void shutdown();
-    
+
     /* NOTE weak implementations in `SubsystemHIDEvents`*/
     void keyPressed();
     void keyReleased();
@@ -53,9 +73,9 @@ namespace umfeld {
     void mouseWheel(float x, float y);
     void dropped(const char* dropped_filedir);
     bool sdl_event(const SDL_Event& event);
-    
+
     void audioEvent();
     void audioEvent(const umfeld::PAudio& device);
     void callback_audioEvent(const umfeld::PAudio& device);
     void callback_audioEvent();
-}
+} // namespace umfeld
