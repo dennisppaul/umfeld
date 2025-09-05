@@ -28,10 +28,11 @@
 
 using namespace std::chrono;
 
+UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
+
 namespace umfeld {
 
     UMFELD_FUNC_WEAK void arguments(const std::vector<std::string>& args) { LOG_CALLBACK_MSG("default arguments"); }
-    // UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
     UMFELD_FUNC_WEAK void setup() { LOG_CALLBACK_MSG("default setup"); }
     UMFELD_FUNC_WEAK void draw() { LOG_CALLBACK_MSG("default draw"); }
     UMFELD_FUNC_WEAK void update() { LOG_CALLBACK_MSG("default update"); }
