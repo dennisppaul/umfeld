@@ -30,3 +30,15 @@ void umfeld::callback_audioEvent(const umfeld::PAudio& device) {
 void umfeld::callback_audioEvent() {
     audioEvent();
 }
+
+// TODO new callback mechanism
+
+namespace umfeld {
+    namespace {
+        void    callback_settings_default() {}
+        VoidFn* callback_settings_fn = callback_settings_default;
+    } // namespace
+} // namespace umfeld
+
+void umfeld::callback_settings_set(VoidFn* f) { callback_settings_fn = f ? f : callback_settings_default; }
+void umfeld::callback_settings_call() { callback_settings_fn(); }

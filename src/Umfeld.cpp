@@ -31,7 +31,7 @@ using namespace std::chrono;
 namespace umfeld {
 
     UMFELD_FUNC_WEAK void arguments(const std::vector<std::string>& args) { LOG_CALLBACK_MSG("default arguments"); }
-    UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
+    // UMFELD_FUNC_WEAK void settings() { LOG_CALLBACK_MSG("default settings"); }
     UMFELD_FUNC_WEAK void setup() { LOG_CALLBACK_MSG("default setup"); }
     UMFELD_FUNC_WEAK void draw() { LOG_CALLBACK_MSG("default draw"); }
     UMFELD_FUNC_WEAK void update() { LOG_CALLBACK_MSG("default update"); }
@@ -87,7 +87,7 @@ namespace umfeld {
         }
     }
 
-    void getLocation(const int& x, int& y) {
+    void getLocation(const int& x, const int& y) {
         if (subsystem_graphics) {
             if (subsystem_graphics->set_window_position) {
                 subsystem_graphics->set_window_position(x, y);
@@ -206,6 +206,12 @@ static uint32_t compile_subsystems_flag() {
 
 SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
 
+#if UMFELD_SET_DEFAULT_CALLBACK
+    umfeld::callback_settings_set(settings);
+#else
+    umfeld_set_callbacks();
+#endif
+
     /*
      * 1. prepare umfeld application ( e.g args, settings )
      * 2. initialize SDL
@@ -223,7 +229,7 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
                     ".", umfeld::VERSION_PATCH);
     umfeld::console(umfeld::separator(false));
     handle_arguments(argc, argv);
-    umfeld::settings();
+    umfeld::callback_settings_call();
 
     /* create/check graphics subsystem */
     if (umfeld::enable_graphics) {

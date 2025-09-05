@@ -161,7 +161,13 @@ namespace umfeld {
         console(fl("render to offscreen"), g->render_to_offscreen ? "true" : "false");
         console(fl("framebuffer size"), framebuffer_width, " x ", framebuffer_height, " px");
         console(fl("graphics size"), width, " x ", height, " px");
-        console(fl("pixel_density"), pixel_density, width != framebuffer_width ? " ( note that if graphics and framebuffer size do not align the pixel density should not be 1 )" : "");
+        console(fl("pixel_density"), pixel_density, (width != framebuffer_width) && (pixel_density <= 1) ? " "
+#if UMFELD_DEBUG_PIXEL_DENSITY_FRAME_BUFFER
+                                                                                                           "( pixel_density and framebuffer size do not align )"
+#else
+                                                                                                           ""
+#endif
+                                                                                                         : "");
         g->pixelDensity(pixel_density); // NOTE setting pixel density from actual configuration
 
         g->set_auto_generate_mipmap(false);

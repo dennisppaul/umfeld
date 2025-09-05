@@ -25,10 +25,17 @@
 #include "Subsystems.h"
 #include "PAudio.h"
 
+void umfeld_set_callbacks();
+void settings();
+
 namespace umfeld {
+    using VoidFn = void();
+    void callback_settings_set(VoidFn* f);
+    void callback_settings_call();
+
     /* NOTE weak implementations in `Umfeld.cpp` */
     void arguments(const std::vector<std::string>& args);
-    void settings();
+    // void settings();
     void setup();
     void draw();
     void update();
