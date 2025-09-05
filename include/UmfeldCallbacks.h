@@ -54,8 +54,9 @@ namespace umfeld {
     void callback_settings_call();
     // TODO decide on naming scheme for callbacks
     void set_callback_setup(VoidFn* f);
-    void call_callback_setup();
+    void run_callback_setup();
     void set_setup_callback(VoidFn* f);
+    void run_setup_callback();
     void call_setup_callback();
     // TODO ...
 
