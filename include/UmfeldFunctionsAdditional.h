@@ -97,7 +97,7 @@ namespace umfeld {
         // Call the function with forwarded arguments
         std::invoke(std::forward<Func>(func), std::forward<Args>(args)...);
 
-        const auto                         end     = std::chrono::high_resolution_clock::now();
+        const auto                                      end     = std::chrono::high_resolution_clock::now();
         const std::chrono::duration<double, std::milli> elapsed = end - start;
         return elapsed.count(); // in milliseconds
     }
@@ -201,13 +201,13 @@ namespace umfeld {
     } while (0)
 #define console_once(...) \
     _console_once(__COUNTER__, __VA_ARGS__)
-#define _warning_in_function_once(counter, ...)           \
-    do {                                                  \
-        static bool _once_flag_##counter = false;         \
-        if (!_once_flag_##counter) {                      \
-            warning("'", __func__, "' :: ", __VA_ARGS__); \
-            _once_flag_##counter = true;                  \
-        }                                                 \
+#define _warning_in_function_once(counter, ...)                   \
+    do {                                                          \
+        static bool _once_flag_##counter = false;                 \
+        if (!_once_flag_##counter) {                              \
+            umfeld::warning("'", __func__, "' :: ", __VA_ARGS__); \
+            _once_flag_##counter = true;                          \
+        }                                                         \
     } while (0)
 #define warning_in_function_once(...) \
     _warning_in_function_once(__COUNTER__, __VA_ARGS__)

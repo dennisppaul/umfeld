@@ -24,15 +24,13 @@
 
 #include "Umfeld.h"
 
-namespace umfeld {
-    void midi_message(const std::vector<unsigned char>& message);
-    void note_off(int channel, int note);
-    void note_on(int channel, int note, int velocity);
-    void control_change(int channel, int control, int value);
-    void program_change(int channel, int program);
-    void pitch_bend(int channel, int value);
-    void sys_ex(const std::vector<unsigned char>& message);
-}
+void midi_message(const std::vector<unsigned char>& message);
+void note_off(int channel, int note);
+void note_on(int channel, int note, int velocity);
+void control_change(int channel, int control, int value);
+void program_change(int channel, int program);
+void pitch_bend(int channel, int value);
+void sys_ex(const std::vector<unsigned char>& message);
 
 namespace umfeld {
     inline void (*midi_callback_midi_message)(const std::vector<unsigned char>&) = midi_message;

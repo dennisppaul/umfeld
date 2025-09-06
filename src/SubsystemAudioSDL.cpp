@@ -39,13 +39,13 @@
 
 namespace umfeld::subsystem {
     struct PAudioSDL {
-        PAudio*                           audio_device{nullptr};
-        int                               logical_input_device_id{0};
-        SDL_AudioStream*                  sdl_input_stream{nullptr};
-        int                               logical_output_device_id{0};
-        SDL_AudioStream*                  sdl_output_stream{nullptr};
-        SDL_Thread*                       audio_thread_handle{nullptr};
-        bool                              is_running{true};
+        PAudio*                                        audio_device{nullptr};
+        int                                            logical_input_device_id{0};
+        SDL_AudioStream*                               sdl_input_stream{nullptr};
+        int                                            logical_output_device_id{0};
+        SDL_AudioStream*                               sdl_output_stream{nullptr};
+        SDL_Thread*                                    audio_thread_handle{nullptr};
+        bool                                           is_running{true};
         std::chrono::high_resolution_clock::time_point next_time = std::chrono::high_resolution_clock::now();
     };
 
@@ -384,12 +384,12 @@ namespace umfeld::subsystem {
                         // NOTE for main audio device
                         if (a != nullptr) {
                             if (_device->audio_device == a) {
-                                callback_audioEvent();
+                                run_audioEvent_callback();
                             }
                         }
 
                         // NOTE for all registered audio devices ( including main audio device )
-                        callback_audioEvent(*_device->audio_device);
+                        run_audioEventPAudio_callback(*_device->audio_device);
 
                         const int    num_processed_bytes = static_cast<int>(_num_sample_frames) * _device->audio_device->output_channels * sizeof(float);
                         const float* buffer              = _device->audio_device->output_buffer;
@@ -650,7 +650,7 @@ namespace umfeld::subsystem {
         // NOTE threaded audio update must be started manually
         return audio_device;
     }
-} // namespace umfeld
+} // namespace umfeld::subsystem
 
 umfeld::SubsystemAudio* umfeld_create_subsystem_audio_sdl() {
     auto* audio         = new umfeld::SubsystemAudio{};

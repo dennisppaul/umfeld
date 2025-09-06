@@ -130,9 +130,9 @@ namespace umfeld::subsystem {
                     if ((availableInputFrames >= audio->buffer_size || audio->input_channels == 0) &&
                         (availableOutputFrames >= audio->buffer_size || audio->output_channels == 0)) {
                         if (a != nullptr && audio == umfeld::a) {
-                            callback_audioEvent();
+                            run_audioEvent_callback();
                         }
-                        callback_audioEvent(*audio);
+                        run_audioEventPAudio_callback(*audio);
                     }
 
                     if (availableOutputFrames >= audio->buffer_size) {
@@ -197,9 +197,9 @@ namespace umfeld::subsystem {
 
             // Call your event/callback function
             if (audio == umfeld::a) {
-                callback_audioEvent();
+                run_audioEvent_callback();
             }
-            callback_audioEvent(*audio);
+            run_audioEventPAudio_callback(*audio);
 
             // Copy output data from your buffer (if any output)
             if (audio->output_channels > 0 && outputBuffer != nullptr) {
@@ -518,7 +518,7 @@ namespace umfeld::subsystem {
     static const char* name() {
         return "PortAudio";
     }
-} // namespace umfeld
+} // namespace umfeld::subsystem
 
 umfeld::SubsystemAudio* umfeld_create_subsystem_audio_portaudio() {
     auto* audio         = new umfeld::SubsystemAudio{};

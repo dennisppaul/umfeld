@@ -23,54 +23,33 @@
 #include "Umfeld.h"
 #include "UmfeldCallbacks.h"
 
-// declare weak user hook
-// ... it seems that it must be implemented in the same translation unit
-// ... function cannot be in namespace
-UMFELD_FUNC_WEAK void umfeld::keyPressed() { LOG_CALLBACK_MSG("default keyPressed"); }
-UMFELD_FUNC_WEAK void umfeld::keyReleased() { LOG_CALLBACK_MSG("default keyReleased"); }
-UMFELD_FUNC_WEAK void umfeld::mousePressed() { LOG_CALLBACK_MSG("default mousePressed"); }
-UMFELD_FUNC_WEAK void umfeld::mouseReleased() { LOG_CALLBACK_MSG("default mouseReleased"); }
-UMFELD_FUNC_WEAK void umfeld::mouseDragged() { LOG_CALLBACK_MSG("default mouseDragged"); }
-UMFELD_FUNC_WEAK void umfeld::mouseMoved() { LOG_CALLBACK_MSG("default mouseMoved"); }
-UMFELD_FUNC_WEAK void umfeld::mouseWheel(const float x, const float y) { LOG_CALLBACK_MSG("default mouseWheel"); }
-UMFELD_FUNC_WEAK void umfeld::dropped(const char* dropped_filedir) { LOG_CALLBACK_MSG("default dropped"); }
-UMFELD_FUNC_WEAK bool umfeld::sdl_event(const SDL_Event& event) {
-    LOG_CALLBACK_MSG("sdl event");
-    return false;
-}
-
-// UMFELD_FUNC_WEAK void callbackHook() { printf("default callbackHook\n"); }
-
 namespace umfeld::subsystem {
     static bool _handle_events_in_loop = true;
     static bool _mouse_is_pressed      = false;
-
-    // TODO callbacks could be made configurable
-    // static void (*callbackHook_func)() = callbackHook;
 
     void hid_handle_events_in_loop(const bool events_in_loop) {
         _handle_events_in_loop = events_in_loop;
     }
 
     static void handle_event(const SDL_Event& event) {
-        sdl_event(event);
+        run_sdl_event_callback(event);
 
         switch (event.type) {
             case SDL_EVENT_KEY_DOWN:
-                umfeld::key = static_cast<int>(event.key.key);
-                keyPressed();
-                umfeld::isKeyPressed = true;
+                key = static_cast<int>(event.key.key);
+                run_keyPressed_callback();
+                isKeyPressed = true;
                 break;
             case SDL_EVENT_KEY_UP:
-                umfeld::key          = static_cast<int>(event.key.key);
-                umfeld::isKeyPressed = false;
-                keyReleased();
+                key          = static_cast<int>(event.key.key);
+                isKeyPressed = false;
+                run_keyReleased_callback();
                 break;
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                umfeld::mouseButton = event.button.button; // TODO not sure how consistent these are across platforms
-                _mouse_is_pressed   = true;
-                mousePressed();
-                umfeld::isMousePressed = true;
+                mouseButton       = event.button.button; // TODO not sure how consistent these are across platforms
+                _mouse_is_pressed = true;
+                run_mousePressed_callback();
+                isMousePressed = true;
 
                 // callbackHook();
                 // if (callbackHook_func) {
@@ -78,40 +57,39 @@ namespace umfeld::subsystem {
                 // }
                 break;
             case SDL_EVENT_MOUSE_BUTTON_UP:
-                _mouse_is_pressed   = false;
-                umfeld::mouseButton = -1;
-                mouseReleased();
-                umfeld::isMousePressed = false;
+                _mouse_is_pressed = false;
+                mouseButton       = -1;
+                run_mouseReleased_callback();
+                isMousePressed = false;
                 break;
             case SDL_EVENT_MOUSE_MOTION:
-                umfeld::pmouseX = umfeld::mouseX;
-                umfeld::pmouseY = umfeld::mouseY;
-                umfeld::mouseX  = static_cast<float>(event.motion.x);
-                umfeld::mouseY  = static_cast<float>(event.motion.y);
+                pmouseX = mouseX;
+                pmouseY = mouseY;
+                mouseX  = static_cast<float>(event.motion.x);
+                mouseY  = static_cast<float>(event.motion.y);
 
                 if (_mouse_is_pressed) {
-                    mouseDragged();
+                    run_mouseDragged_callback();
                 } else {
-                    mouseMoved();
+                    run_mouseMoved_callback();
                 }
                 break;
             // case SDL_MULTIGESTURE:
             case SDL_EVENT_MOUSE_WHEEL:
-                mouseWheel(event.wheel.mouse_x, event.wheel.mouse_y);
+                run_mouseWheel_callback(event.wheel.mouse_x, event.wheel.mouse_y);
                 break;
             case SDL_EVENT_DROP_FILE: {
                 // only allow drag and drop on main window
                 // if (event.drop.windowID != 1) { break; }
                 const char* dropped_filedir = event.drop.data;
-                dropped(dropped_filedir);
+                run_dropped_callback(dropped_filedir);
                 break;
             }
             default: break;
         }
     }
 
-    static void shutdown() {
-    }
+    static void shutdown() {}
 
     static void set_flags(uint32_t& subsystem_flags) {
         subsystem_flags |= SDL_INIT_EVENTS;
@@ -148,7 +126,7 @@ namespace umfeld::subsystem {
     static const char* name() {
         return "HID Events ( mouse, keyboard, drag-n-dr... )";
     }
-} // namespace umfeld
+} // namespace umfeld::subsystem
 
 umfeld::Subsystem* umfeld_create_subsystem_hid() {
     auto* libraries                 = new umfeld::Subsystem{};

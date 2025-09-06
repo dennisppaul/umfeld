@@ -20,10 +20,10 @@
 #include "UmfeldDefines.h"
 #include "MIDI.h"
 
-UMFELD_FUNC_WEAK void umfeld::midi_message(const std::vector<unsigned char>& message) { LOG_CALLBACK_MSG("default midi_message"); }
-UMFELD_FUNC_WEAK void umfeld::note_off(int channel, int note) { LOG_CALLBACK_MSG("default note_off"); }
-UMFELD_FUNC_WEAK void umfeld::note_on(int channel, int note, int velocity) { LOG_CALLBACK_MSG("default note_on"); }
-UMFELD_FUNC_WEAK void umfeld::control_change(int channel, int control, int value) { LOG_CALLBACK_MSG("default control_change"); }
-UMFELD_FUNC_WEAK void umfeld::program_change(int channel, int program) { LOG_CALLBACK_MSG("default program_change"); }
-UMFELD_FUNC_WEAK void umfeld::pitch_bend(int channel, int value) { LOG_CALLBACK_MSG("default pitch_bend"); }
-UMFELD_FUNC_WEAK void umfeld::sys_ex(const std::vector<unsigned char>& message) { LOG_CALLBACK_MSG("default sys_ex"); }
+UMFELD_FUNC_WEAK void midi_message(const std::vector<unsigned char>& message) { LOG_CALLBACK_MSG("default midi_message"); }
+UMFELD_FUNC_WEAK void note_off(int channel, int note) { LOG_CALLBACK_MSG("default note_off"); }
+UMFELD_FUNC_WEAK void note_on(int channel, int note, int velocity) { LOG_CALLBACK_MSG("default note_on"); }
+UMFELD_FUNC_WEAK void control_change(int channel, int control, int value) { LOG_CALLBACK_MSG("default control_change"); }
+UMFELD_FUNC_WEAK void program_change(int channel, int program) { LOG_CALLBACK_MSG("default program_change"); }
+UMFELD_FUNC_WEAK void pitch_bend(int channel, int value) { LOG_CALLBACK_MSG("default pitch_bend"); }
+UMFELD_FUNC_WEAK void sys_ex(const std::vector<unsigned char>& message) { LOG_CALLBACK_MSG("default sys_ex"); }

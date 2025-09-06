@@ -19,17 +19,14 @@
 
 #pragma once
 
+// SYSTEM
+
 #ifndef TRUE
 #define TRUE 1
 #endif
 #ifndef FALSE
 #define FALSE 0
 #endif
-
-#ifndef UMFELD_SET_DEFAULT_CALLBACK
-#define UMFELD_SET_DEFAULT_CALLBACK TRUE
-#endif
-#define ENABLE_UMFELD_CALLBACK_LOGGING FALSE
 
 // DEBUGGING
 
@@ -43,34 +40,22 @@
 
 // CALLBACKS
 
-#if ENABLE_UMFELD_CALLBACK_LOGGING
-#define LOG_CALLBACK_MSG(msg) SDL_Log(msg)
-#else
-#define LOG_CALLBACK_MSG(msg) ((void) 0)
-#endif
-
-// // TODO remove WEAK define asap
-// #ifndef SYSTEM_WINDOWS
-// #ifndef WEAK
-// #define WEAK __attribute__((weak))
-// #endif
-// #else
-// #define WEAK
-// #endif
-
-// TODO remove UMFELD_FUNC_WEAK mechanism asap
 #ifndef UMFELD_FUNC_WEAK
 #define UMFELD_FUNC_WEAK __attribute__((weak))
 #endif
 
-#ifndef TRUE
-#define TRUE 1
+#ifndef UMFELD_SET_DEFAULT_CALLBACK
+#define UMFELD_SET_DEFAULT_CALLBACK TRUE
 #endif
-#ifndef FALSE
-#define FALSE 0
+#define ENABLE_UMFELD_CALLBACK_LOGGING FALSE
+
+#if ENABLE_UMFELD_CALLBACK_LOGGING
+#define LOG_CALLBACK_MSG(msg) warning_in_function_once(msg)
+#else
+#define LOG_CALLBACK_MSG(msg) ((void) 0)
 #endif
 
-/* --- DEFAULTS --- */
+/* --- CONSOLE OUTPUT --- */
 
 #ifndef UMFELD_PRINT_ERRORS
 #define UMFELD_PRINT_ERRORS TRUE
