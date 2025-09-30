@@ -6,9 +6,9 @@ date:   2025-06-30 10:00:00 +0100
 
 ![2025-06-30--Umfeld-on-Raspberry-Pi-1-Mod-B](/assets/2025-06-30--Umfeld-on-Raspberry-Pi-1-Mod-B.gif){: style="width:100%;" }
 
-one #weekendproject later i can now confirm that _Umfeld_ compiles and runs on a *Raspberry Pi 1 Model B* ( one of the very first RPIs released ).
+one #weekendproject later i can now confirm that *Umfeld* compiles and runs on a *Raspberry Pi 1 Model B* ( one of the very first RPIs released ).
 
-i started off with a fresh install of *Raspberry Pi OS Bookworm ( 32-bit, 2025-05-13 Release )*. from there, i used the _Umfeld_ install script to pull in all required dependencies. that took care of most things, but a few tweaks were needed to get it running.
+i started off with a fresh install of *Raspberry Pi OS Bookworm ( 32-bit, 2025-05-13 Release )*. from there, i used the *Umfeld* install script to pull in all required dependencies. that took care of most things, but a few tweaks were needed to get it running.
 
 - i forced the renderer to use *OpenGL 2.0*, which currently isn’t in a great state on this hardware. expect quirks.
 - i hit a linker error related to atomics. to fix it, i had to explicitly link against libatomic. that meant adding this line to the CMakeLists.txt:

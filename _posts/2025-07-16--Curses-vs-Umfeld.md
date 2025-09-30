@@ -8,7 +8,7 @@ date:   2025-07-16 10:00:00 +0100
 
 another #weekendproject has been successfully completed: **TERMINAL RENDERER**
 
-after i went deep into the Text-based User Interface (TUI) rabbit hole ( just saying: ncspot to replace Spotify and matterhorn to replace Mattermost ;) ), i thought it would be nice if _Umfeld_ could also be _text-based_.
+after i went deep into the Text-based User Interface (TUI) rabbit hole ( just saying: ncspot to replace Spotify and matterhorn to replace Mattermost ;) ), i thought it would be nice if *Umfeld* could also be _text-based_.
 
 so if you ever get tired of the same old pixel-based graphics and want to render lines, images, text, etcetera right into a terminal window, as some sort of weird ASCII representation, just do this in your code:
 

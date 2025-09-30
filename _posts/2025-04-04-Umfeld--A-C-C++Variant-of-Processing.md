@@ -12,11 +12,11 @@ hej community,
 
 i have been (very) busy the last weeks making a point: ever since i started using [Processing](https://processing.org) as an environment or paradigm for _designing with code_, i wanted to make a C/C++ variant of it. finally, i did:
 
-> _Umfeld_ is a lightweight C++ environment for small audio- and graphics-based applications. it is inspired by [Processing.org](https://processing.org) and similar environments.
+> *Umfeld* is a lightweight C++ environment for small audio- and graphics-based applications. it is inspired by [Processing.org](https://processing.org) and similar environments.
 
-i’m now sharing this with you because i think the environment, the approach, but first and foremost the _attitude_ and _aura_ could be interesting, relevant, and helpful for you. i’ve tried to outline a few reasons why i think that is ( a bit more on the technical side ) in the [Why _Umfeld_?](https://github.com/dennisppaul/umfeld) text. but there is much more to say about this … i truly think that it has a political tangent … maybe more on that at a later point ;)
+i’m now sharing this with you because i think the environment, the approach, but first and foremost the _attitude_ and _aura_ could be interesting, relevant, and helpful for you. i’ve tried to outline a few reasons why i think that is ( a bit more on the technical side ) in the [Why *Umfeld*?](https://github.com/dennisppaul/umfeld) text. but there is much more to say about this … i truly think that it has a political tangent … maybe more on that at a later point ;)
 
-so, if you’re looking for a DM-style weekend project, why not head over to the GitHub repository of _Umfeld_ and give it a try:
+so, if you’re looking for a DM-style weekend project, why not head over to the GitHub repository of *Umfeld* and give it a try:
 
 https://github.com/dennisppaul/umfeld
 
@@ -24,7 +24,7 @@ https://github.com/dennisppaul/umfeld
 
 this is still very unfinished and experimental software. there’s a good chance that a lot of things do not work. if you’re on windows, it’s likely that you cannot use it at all ( at this point ). but since you shouldn’t be on windows anyway, maybe this is a good time to finally install Ubuntu ;)
 
-AAMOF, i’ve tested _Umfeld_ on a MacBook Pro M3, a Mac Mini (intel-based) — both running macOS 15.3 — on that same Mac Mini running Ubuntu 24.04 LTS, and on a Raspberry Pi 4 Model B running _Bookworm_.
+AAMOF, i’ve tested *Umfeld* on a MacBook Pro M3, a Mac Mini (intel-based) — both running macOS 15.3 — on that same Mac Mini running Ubuntu 24.04 LTS, and on a Raspberry Pi 4 Model B running _Bookworm_.
 
 i’ve created a [Quick Start](https://github.com/dennisppaul/umfeld) guide ( which i’m also using to test on different machines ), and if you’re really into it, i also created an image that should set up your RPi 4B or 5 just like that:
 
@@ -50,6 +50,6 @@ this is not _my_ project — it never was ( i obviously ripped the whole idiom f
 
 so again, take a look at it, let me know what you think ( including critical and non-confirming points ), and if this project doesn’t get you excited, your ❤️ might need a firmware update!
 
-PS { just to give you a bit of a frame of reference for what can already be done with _Umfeld_: Leo Puhl @leonat wrote his excellent bachelor thesis with it … try multi-channel sound processing like _that_ in java- or web-based processing ;) }
+PS { just to give you a bit of a frame of reference for what can already be done with *Umfeld*: Leo Puhl @leonat wrote his excellent bachelor thesis with it … try multi-channel sound processing like _that_ in java- or web-based processing ;) }
 
 PPS { and since you’re obviously still reading, you might also find this interview as interesting as i did, in regards to _attitude_: https://open.spotify.com/episode/2qfg3lPaetR4mp580btkOW?si=7b22c2812a94465c — but this is a bit OT }
