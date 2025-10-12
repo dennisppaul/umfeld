@@ -9,8 +9,9 @@ layout: default
 
     {{ content }}
 
+<!-- 
     {%- if site.posts.size > 0 -%}
-<!--     <h2>{{ page.list_title | default: "" }}</h2> -->
+<!~~     <h2>{{ page.list_title | default: "" }}</h2> ~~>
     <ul class="post-list">
         {%- for post in site.posts limit:10 -%}
         <li>
@@ -26,12 +27,14 @@ layout: default
                     {{ post.excerpt | strip_newlines }}
                 </a>
             {%- endif -%}
-            <p class="dash-separator">------------------------------------------------------------------------------------------------------------------------</p>
+            <p class="dash-separator">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
         </li>
         {%- endfor -%}
     </ul>
     {%- endif -%}
+ -->
 
+<!-- 
     <h1>OLDER POSTS</h1>
     {%- if site.posts.size > 0 -%}
     <ul class="post-list">
@@ -46,4 +49,5 @@ layout: default
         {%- endfor -%}
     </ul>
     {%- endif -%}
+ -->
 </div>
