@@ -1,0 +1,49 @@
+---
+layout: default
+---
+
+<div class="home">
+    {%- if page.title -%}
+        <h1 class="page-heading">{{ page.title }}</h1>
+    {%- endif -%}
+
+    {{ content }}
+
+    {%- if site.posts.size > 0 -%}
+<!--     <h2>{{ page.list_title | default: "" }}</h2> -->
+    <ul class="post-list">
+        {%- for post in site.posts limit:10 -%}
+        <li>
+            <a class="post-link" href="{{ post.url | relative_url }}">
+                <h1 class="post-list-heading">
+                    {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+                    ({{ post.date | date: date_format }})
+                    {{ post.title | escape }}
+                </h1>
+            </a>
+            {%- if site.show_excerpts -%}
+                <a class="post-excerpt" href="{{ post.url | relative_url }}">
+                    {{ post.excerpt | strip_newlines }}
+                </a>
+            {%- endif -%}
+            <p class="dash-separator">------------------------------------------------------------------------------------------------------------------------</p>
+        </li>
+        {%- endfor -%}
+    </ul>
+    {%- endif -%}
+
+    <h1>OLDER POSTS</h1>
+    {%- if site.posts.size > 0 -%}
+    <ul class="post-list">
+        {%- for post in site.posts limit:666 offset: 10 -%}
+        <li>
+            <a class="post-link" href="{{ post.url | relative_url }}">
+                {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+                ({{ post.date | date: date_format }})
+                {{ post.title | escape }}
+            </a>
+        </li>
+        {%- endfor -%}
+    </ul>
+    {%- endif -%}
+</div>
