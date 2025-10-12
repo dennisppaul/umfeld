@@ -4,6 +4,8 @@ layout: home
 
 {% include_relative /assets/abstract.md %}
 
+![umfeld-logotype](/assets/umfeld-logotype.png){: style="width:50%;" }
+
 ## Quickstart
 
 ### 1. Prepare
