@@ -18,11 +18,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Umfeld Developer Diary
+title: Umfeld
 email: dennis.paul@hfk-bremen.de
 description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://umfeld.dennisppaul.de" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://umfeld.org" # the base hostname & protocol for your site, e.g. http://example.com
 # mastodon_username: dennisppaul
 github_username:  dennisppaul
 
