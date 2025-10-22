@@ -42,6 +42,8 @@ namespace umfeld {
     class SamplerT;
     using Sampler = SamplerT<float>;
 
+
+    inline bool              equals(const std::string_view a, const std::string_view b) { return a == b; }
     bool                     begins_with(const std::string& str, const std::string& prefix);
     bool                     ends_with(const std::string& str, const std::string& suffix);
     uint32_t                 color_pack(float r, float g, float b, float a);

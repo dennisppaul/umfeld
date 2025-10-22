@@ -213,6 +213,16 @@ namespace umfeld::subsystem {
             }
         }
 
+        bool start_stream() {
+            const PaError result = Pa_StartStream(stream);
+            if (result != paNoError) {
+                error("Failed to start stream: ", Pa_GetErrorText(result), "");
+                return false;
+            }
+            last_audio_update = std::chrono::high_resolution_clock::now();
+            return true;
+        }
+
     private:
         bool                                                        isPaused = false;
         std::chrono::milliseconds                                   update_interval;
@@ -472,18 +482,13 @@ namespace umfeld::subsystem {
                 return false;
             }
 
-            const PaError result = Pa_StartStream(stream);
-            if (result != paNoError) {
-                error("Failed to start stream: ", Pa_GetErrorText(result), "");
-                return false;
-            }
-            last_audio_update = std::chrono::high_resolution_clock::now();
+            start_stream();
+            stop();
 
             return true;
         }
     };
 
-    static void setup_post() {}
     static void draw_pre() {}
     static void draw_post() {}
     static void event(SDL_Event* event) {}
@@ -579,7 +584,9 @@ namespace umfeld::subsystem {
         }
     }
 
-    static void setup_pre() {
+    static void setup_pre() {}
+
+    static void setup_post() {
         for (const auto _device: _audio_devices) {
             if (_device != nullptr) {
                 _device->start();

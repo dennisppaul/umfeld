@@ -34,20 +34,20 @@
 #include "osc/OscPacketListener.h"
 #include "osc/OscReceivedElements.h"
 
-const static int OSC_TRANSMIT_OUTPUT_BUFFER_SIZE = 1024;
+static constexpr int OSC_TRANSMIT_OUTPUT_BUFFER_SIZE = 1024;
 
 class NetAddress {
 public:
-    NetAddress(std::string ip_address, int port) {
-        IpEndpointName mEndpointName = IpEndpointName(ip_address.c_str(), port);
-        fTransmitSocket              = new UdpTransmitSocket(mEndpointName);
+    NetAddress(const std::string& ip_address, int port) {
+        auto mEndpointName = IpEndpointName(ip_address.c_str(), port);
+        fTransmitSocket    = new UdpTransmitSocket(mEndpointName);
     }
 
     ~NetAddress() {
         delete fTransmitSocket;
     }
 
-    UdpTransmitSocket* socket() {
+    UdpTransmitSocket* socket() const {
         return fTransmitSocket;
     }
 
@@ -132,7 +132,7 @@ public:
         fPacket << value;
     }
 
-    void add(std::string value) {
+    void add(const std::string& value) {
         if (!fIsRecording) { begin(); }
         fPacket << value.c_str();
     }
@@ -158,7 +158,7 @@ private:
 
 class OSCListener {
 public:
-    virtual ~    OSCListener() = default;
+    virtual ~OSCListener() = default;
     virtual void receive_native(const osc::ReceivedMessage& msg) {};
     virtual void receive(const OscMessage& msg) {};
 };
@@ -171,8 +171,8 @@ public:
                                                                                                             fUseUDPMulticast(use_UDP_multicast) {
         mOSCThread = std::thread(&OSC::osc_thread, this);
 
-        IpEndpointName mEndpointName = IpEndpointName(fTransmitAddress.c_str(), fTransmitPort);
-        mTransmitSocket              = new UdpTransmitSocket(mEndpointName);
+        auto mEndpointName = IpEndpointName(fTransmitAddress.c_str(), fTransmitPort);
+        mTransmitSocket    = new UdpTransmitSocket(mEndpointName);
     }
 
     OSC(int receive_port, bool use_UDP_multicast = true) : fTransmitAddress(""),
@@ -196,9 +196,9 @@ public:
         fInstance       = instance;
     }
 
-    void invoke_callback(const osc::ReceivedMessage& msg) {
-        OscMessage                           msg_(msg.AddressPattern());
-        osc::ReceivedMessage::const_iterator arg = msg.ArgumentsBegin();
+    void invoke_callback(const osc::ReceivedMessage& msg) const {
+        OscMessage msg_(msg.AddressPattern());
+        auto       arg = msg.ArgumentsBegin();
         while (arg != msg.ArgumentsEnd()) {
             if (arg->IsFloat()) {
                 msg_.container.push_back(OscPayloadFragment(arg->AsFloat()));
@@ -229,12 +229,12 @@ public:
 
     /* send */
 
-    void send(OscMessage message, NetAddress address) {
+    void send(OscMessage message, const NetAddress& address) {
         message.end();
         address.socket()->Send(message.data(), message.size());
     }
 
-    void send(OscMessage& message) {
+    void send(OscMessage& message) const {
         message.end();
         if (mTransmitSocket != nullptr) {
             mTransmitSocket->Send(message.data(), message.size());
@@ -349,7 +349,7 @@ private:
     public:
         [[maybe_unused]] MOscPacketListener(OSC* parent) : mParent(parent) {}
 
-        void process(const osc::ReceivedMessage& msg) {
+        void process(const osc::ReceivedMessage& msg) const {
             mParent->invoke_callback(msg);
         }
 
@@ -377,7 +377,7 @@ private:
             if (fUseUDPMulticast) {
                 MOscPacketListener mOscListener(this);
                 PacketListener*    listener_       = &mOscListener;
-                IpEndpointName     mIpEndpointName = IpEndpointName(fTransmitAddress.c_str(), fReceivePort);
+                auto               mIpEndpointName = IpEndpointName(fTransmitAddress.c_str(), fReceivePort);
                 if (mIpEndpointName.IsMulticastAddress()) {
                     UdpSocket mUdpSocket;
                     mUdpSocket.SetAllowReuse(true);
