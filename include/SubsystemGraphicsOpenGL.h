@@ -34,6 +34,7 @@ namespace umfeld {
         int  depth_buffer_depth   = 24;
         int  stencil_buffer_depth = 8;
         bool double_buffered      = true;
+        bool sRGB                 = false;
     };
 
     void OGL_draw_pre();
@@ -70,6 +71,10 @@ namespace umfeld {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, info.profile);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, info.major_version);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, info.minor_version);
+
+        if (info.sRGB) {
+            SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1);
+        }
 
         console(fl("OpenGL version"), info.major_version, ".", info.minor_version);
         console(fl("window size"), info.width, "x", info.height);
@@ -150,6 +155,10 @@ namespace umfeld {
         PGraphicsOpenGL::OpenGLCapabilities open_gl_capabilities;
         PGraphicsOpenGL::OGL_query_capabilities(open_gl_capabilities);
         PGraphicsOpenGL::OGL_check_error("SUBSYSTEM_GRAPHICS_OPENGL::init(end)");
+
+        if (info.sRGB) {
+            glEnable(GL_FRAMEBUFFER_SRGB);
+        }
 
         return true;
     }

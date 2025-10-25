@@ -191,12 +191,12 @@ float PGraphics::brightness(const uint32_t color) const {
     const float b = static_cast<float>((color & 0x0000FF00) >> 8) / 255.0f;
     float       h, s, v;
     rgb_to_hsb_f(r, g, b, h, s, v);
-    v = map(v, 0.0, 1.0, 0.0, color_mode_state.range.g);
+    v = map(v, 0.0, 1.0, 0.0, color_mode_state.range.b);
     return v;
 }
 
 color_t PGraphics::color(const float gray) {
-    return color(gray, gray, gray, 1.0);
+    return color(gray, gray, gray, color_mode_state.range.a);
 }
 
 color_t PGraphics::color(const float gray, const float alpha) {
@@ -204,7 +204,7 @@ color_t PGraphics::color(const float gray, const float alpha) {
 }
 
 color_t PGraphics::color(const float v1, const float v2, const float v3) {
-    return color(v1, v2, v3, 1.0);
+    return color(v1, v2, v3, color_mode_state.range.a);
 }
 
 color_t PGraphics::color(const float v1, const float v2, const float v3, const float alpha) {
@@ -218,7 +218,7 @@ color_t PGraphics::color_f(const float brightness, const float alpha) {
 }
 
 color_t PGraphics::color_f(const float r, const float g, const float b) {
-    return color_f(r, g, b, 1);
+    return color_f(r, g, b, 1.0);
 }
 
 color_t PGraphics::color_f(const float r, const float g, const float b, const float a) {
@@ -255,7 +255,7 @@ void PGraphics::background(const float gray, const float alpha) {
 }
 
 void PGraphics::background(const float v1, const float v2, const float v3) {
-    background(v1, v2, v3, 1.0);
+    background(v1, v2, v3, color_mode_state.range.a);
 }
 
 void PGraphics::background(const float v1, const float v2, const float v3, const float alpha) {
@@ -315,7 +315,7 @@ void PGraphics::colorMode(const ColorMode mode, const float max1, const float ma
 }
 
 void PGraphics::fill(const float gray) {
-    fill(gray, gray, gray, 1.0);
+    fill(gray, gray, gray, color_mode_state.range.a);
 }
 
 void PGraphics::fill(const float gray, const float alpha) {
@@ -323,7 +323,7 @@ void PGraphics::fill(const float gray, const float alpha) {
 }
 
 void PGraphics::fill(const float v1, const float v2, const float v3) {
-    fill(v1, v2, v3, 1.0);
+    fill(v1, v2, v3, color_mode_state.range.a);
 }
 
 void PGraphics::fill(const float v1, const float v2, const float v3, const float alpha) {
@@ -361,7 +361,7 @@ void PGraphics::noFill() {
 }
 
 void PGraphics::stroke(const float gray) {
-    stroke(gray, gray, gray, 1.0);
+    stroke(gray, gray, gray, color_mode_state.range.a);
 }
 
 void PGraphics::stroke(const float gray, const float alpha) {
@@ -369,7 +369,7 @@ void PGraphics::stroke(const float gray, const float alpha) {
 }
 
 void PGraphics::stroke(const float v1, const float v2, const float v3) {
-    stroke(v1, v2, v3, 1.0);
+    stroke(v1, v2, v3, color_mode_state.range.a);
 }
 
 void PGraphics::stroke(const float v1, const float v2, const float v3, const float alpha) {
