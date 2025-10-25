@@ -89,35 +89,13 @@
 
 /* --- TOOLS --- */
 
+// TODO move to UmfeldAdditionalFunctions.h
 #ifndef RGBAi
-#define RGBAi(r, g, b, a) (((uint32_t) (a) << 24) | ((uint32_t) (b) << 16) | ((uint32_t) (g) << 8) | ((uint32_t) (r)))
+#define RGBAi(r, g, b, a) (((uint32_t) (r) << 24) | ((uint32_t) (g) << 16) | ((uint32_t) (b) << 8) | ((uint32_t) (a)))
 #endif
 #ifndef RGBAf
-#define RGBAf(r, g, b, a) (((uint32_t) (a * 255.0f) << 24) | ((uint32_t) (b * 255.0f) << 16) | ((uint32_t) (g * 255.0f) << 8) | ((uint32_t) (r * 255.0f)))
+#define RGBAf(r, g, b, a) (((uint32_t) (r * 255.0f) << 24) | ((uint32_t) (g * 255.0f) << 16) | ((uint32_t) (b * 255.0f) << 8) | ((uint32_t) (a * 255.0f)))
 #endif
-#ifndef HSBAf
-#define HSBAf(h, s, b, a) ({                        \
-    float _h = (h) * 360.0f, _s = (s), _b = (b);    \
-    float _r, _g, _bb, _f, _p, _q, _t;              \
-    int   _i = (int) (_h / 60.0f) % 6;              \
-    _f       = (_h / 60.0f) - _i;                   \
-    _p       = _b * (1.0f - _s);                    \
-    _q       = _b * (1.0f - _f * _s);               \
-    _t       = _b * (1.0f - (1.0f - _f) * _s);      \
-    switch (_i) {                                   \
-        case 0: _r = _b, _g = _t, _bb = _p; break;  \
-        case 1: _r = _q, _g = _b, _bb = _p; break;  \
-        case 2: _r = _p, _g = _b, _bb = _t; break;  \
-        case 3: _r = _p, _g = _q, _bb = _b; break;  \
-        case 4: _r = _t, _g = _p, _bb = _b; break;  \
-        default: _r = _b, _g = _p, _bb = _q; break; \
-    }                                               \
-    ((uint32_t) ((uint8_t) ((a) * 255.0f) << 24) |  \
-     (uint32_t) ((uint8_t) (_bb * 255.0f) << 16) |  \
-     (uint32_t) ((uint8_t) (_g * 255.0f) << 8) |    \
-     (uint32_t) ((uint8_t) (_r * 255.0f)));         \
-})
-#endif // HSBAf
 
 #define TIME_FUNCTION_MS(fn) time_function_ms([&]() { fn; })
 
@@ -161,24 +139,24 @@
 /* --- WARNINGS --- */
 
 #if defined(__clang__)
-    #define DISABLE_WARNING_PUSH           _Pragma("clang diagnostic push")
-    #define DISABLE_WARNING_POP            _Pragma("clang diagnostic pop")
-    #define DISABLE_WARNING_DEPRECATED     _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
+#define DISABLE_WARNING_PUSH       _Pragma("clang diagnostic push")
+#define DISABLE_WARNING_POP        _Pragma("clang diagnostic pop")
+#define DISABLE_WARNING_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
 
 #elif defined(__GNUC__)
-    #define DISABLE_WARNING_PUSH           _Pragma("GCC diagnostic push")
-    #define DISABLE_WARNING_POP            _Pragma("GCC diagnostic pop")
-    #define DISABLE_WARNING_DEPRECATED     _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define DISABLE_WARNING_PUSH       _Pragma("GCC diagnostic push")
+#define DISABLE_WARNING_POP        _Pragma("GCC diagnostic pop")
+#define DISABLE_WARNING_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 
 #elif defined(_MSC_VER)
-    #define DISABLE_WARNING_PUSH           __pragma(warning(push))
-    #define DISABLE_WARNING_POP            __pragma(warning(pop))
-    #define DISABLE_WARNING_DEPRECATED     __pragma(warning(disable: 4996))
+#define DISABLE_WARNING_PUSH       __pragma(warning(push))
+#define DISABLE_WARNING_POP        __pragma(warning(pop))
+#define DISABLE_WARNING_DEPRECATED __pragma(warning(disable : 4996))
 
 #else
-    #define DISABLE_WARNING_PUSH
-    #define DISABLE_WARNING_POP
-    #define DISABLE_WARNING_DEPRECATED
+#define DISABLE_WARNING_PUSH
+#define DISABLE_WARNING_POP
+#define DISABLE_WARNING_DEPRECATED
 #endif
 
 /* --- */

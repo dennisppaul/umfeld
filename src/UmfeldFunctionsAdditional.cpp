@@ -78,10 +78,10 @@ namespace umfeld {
      * @param a
      */
     void color_unpack_f(const color_t color, float& r, float& g, float& b, float& a) {
-        a = static_cast<float>(color >> 24 & 0xFF) / 255.0f;
-        b = static_cast<float>(color >> 16 & 0xFF) / 255.0f;
-        g = static_cast<float>(color >> 8 & 0xFF) / 255.0f;
-        r = static_cast<float>(color & 0xFF) / 255.0f;
+        r = static_cast<float>(color >> 24 & 0xFF) / 255.0f;
+        g = static_cast<float>(color >> 16 & 0xFF) / 255.0f;
+        b = static_cast<float>(color >> 8 & 0xFF) / 255.0f;
+        a = static_cast<float>(color & 0xFF) / 255.0f;
     }
 
     /**
@@ -97,7 +97,23 @@ namespace umfeld {
         const uint32_t ig = static_cast<uint32_t>(g * 255.0f) & 0xFF;
         const uint32_t ib = static_cast<uint32_t>(b * 255.0f) & 0xFF;
         const uint32_t ia = static_cast<uint32_t>(a * 255.0f) & 0xFF;
-        return ia << 24 | ib << 16 | ig << 8 | ir;
+        return ir << 24 | ig << 16 | ib << 8 | ia;
+    }
+
+    float red_f(const color_t color) {
+        return static_cast<float>(color >> 24 & 0xFF) / 255.0f;
+    }
+
+    float green_f(const color_t color) {
+        return static_cast<float>(color >> 16 & 0xFF) / 255.0f;
+    }
+
+    float blue_f(const color_t color) {
+        return static_cast<float>(color >> 8 & 0xFF) / 255.0f;
+    }
+
+    float alpha_f(const color_t color) {
+        return static_cast<float>(color >> 0 & 0xFF) / 255.0f;
     }
 
     /**

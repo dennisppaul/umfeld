@@ -46,7 +46,11 @@ namespace umfeld {
     void     rgb_to_hsb_f(float r, float g, float b, float& h, float& s, float& v);
     void     hsb_to_rgb_f(float h, float s, float v, float& r, float& g, float& b);
     uint32_t color_pack_f(float r, float g, float b, float a);
-    void     color_unpack_f(uint32_t color, float& r, float& g, float& b, float& a);
+    void     color_unpack_f(color_t color, float& r, float& g, float& b, float& a);
+    float    red_f(const color_t color);
+    float    green_f(const color_t color);
+    float    blue_f(const color_t color);
+    float    alpha_f(const color_t color);
     // String
     inline bool              equals(const std::string_view a, const std::string_view b) { return a == b; }
     bool                     begins_with(const std::string& str, const std::string& prefix);

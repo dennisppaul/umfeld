@@ -60,7 +60,7 @@ namespace umfeld {
     template<typename T>
     std::string hex(T value, const int width = sizeof(T) * 2) {
         std::stringstream ss;
-        ss << std::hex << std::uppercase << std::setfill('0') << std::setw(width) << (uint64_t) value;
+        ss << std::hex << std::uppercase << std::setfill('0') << std::setw(width) << static_cast<uint64_t>(value);
         return ss.str();
     }
 
@@ -246,7 +246,7 @@ namespace umfeld {
 
     template<typename T>
     float norm(T value, T start, T stop) {
-        return (stop != start) ? float(value - start) / (stop - start) : 0.0f;
+        return (stop != start) ? static_cast<float>(value - start) / (stop - start) : 0.0f;
     }
 
     template<typename T>

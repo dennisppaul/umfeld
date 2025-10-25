@@ -141,27 +141,19 @@ void PGraphics::stroke_properties(const float stroke_join_round_resolution,
 // ### Creating & Reading
 
 float PGraphics::alpha(const color_t color) const {
-    float alpha = static_cast<float>((color & 0x000000FF) >> 0) / 255.0f;
-    alpha       = map(alpha, 0.0, 1.0, 0.0, color_mode_state.range.a);
-    return alpha;
+    return map(alpha_f(color), 0.0, 1.0, 0.0, color_mode_state.range.a);
 }
 
 float PGraphics::blue(const color_t color) const {
-    float blue = static_cast<float>((color & 0x0000FF00) >> 8) / 255.0f;
-    blue       = map(blue, 0.0, 1.0, 0.0, color_mode_state.range.b);
-    return blue;
+    return map(blue_f(color), 0.0, 1.0, 0.0, color_mode_state.range.b);
 }
 
 float PGraphics::green(const color_t color) const {
-    float green = static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f;
-    green       = map(green, 0.0, 1.0, 0.0, color_mode_state.range.g);
-    return green;
+    return map(green_f(color), 0.0, 1.0, 0.0, color_mode_state.range.g);
 }
 
 float PGraphics::red(const color_t color) const {
-    float red = static_cast<float>((color & 0xFF000000) >> 24) / 255.0f;
-    red       = map(red, 0.0, 1.0, 0.0, color_mode_state.range.r);
-    return red;
+    return map(red_f(color), 0.0, 1.0, 0.0, color_mode_state.range.r);
 }
 
 float PGraphics::hue(const uint32_t color) const {
@@ -222,10 +214,11 @@ color_t PGraphics::color_f(const float r, const float g, const float b) {
 }
 
 color_t PGraphics::color_f(const float r, const float g, const float b, const float a) {
-    return static_cast<uint32_t>(a * 255) << 24 |
-           static_cast<uint32_t>(b * 255) << 16 |
-           static_cast<uint32_t>(g * 255) << 8 |
-           static_cast<uint32_t>(r * 255);
+    return RGBAf(r, g, b, a);
+    // return (static_cast<uint32_t>(a * 255) << 24) |
+    //        (static_cast<uint32_t>(b * 255) << 16) |
+    //        (static_cast<uint32_t>(g * 255) << 8) |
+    //        static_cast<uint32_t>(r * 255);
 }
 
 color_t PGraphics::lerpColor(const color_t c1, const color_t c2, float amt) const {
