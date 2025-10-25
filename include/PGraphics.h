@@ -133,6 +133,10 @@ namespace umfeld {
         float   alpha(color_t color) const;
         float   blue(color_t color) const;
         float   brightness(color_t color) const;
+        color_t color(float gray);
+        color_t color(float gray, float alpha);
+        color_t color(float v1, float v2, float v3);
+        color_t color(float v1, float v2, float v3, float alpha);
         color_t color_f(float brightness, float alpha = 1.0f);
         color_t color_f(float r, float g, float b);
         color_t color_f(float r, float g, float b, float a);
@@ -142,48 +146,47 @@ namespace umfeld {
         float   red(color_t color) const;
         float   saturation(color_t color) const;
 
-        color_t color(float gray);
-        color_t color(float gray, float alpha);
-        color_t color(float v1, float v2, float v3);
-        color_t color(float v1, float v2, float v3, float alpha);
-
         // ### Setting
 
-        void background(float gray);
-        void background(const int gray) { background(static_cast<float>(gray)); }
-        void background(const double gray) { background(static_cast<float>(gray)); }
-        void background(float gray, float alpha);
-        void background(float v1, float v2, float v3);
-        void background(float v1, float v2, float v3, float alpha);
-        void fill(float gray);
-        void fill(const int gray) { fill(static_cast<float>(gray)); }
-        void fill(const double gray) { fill(static_cast<float>(gray)); }
-        void fill(float gray, float alpha);
-        void fill(float v1, float v2, float v3);
-        void fill(float v1, float v2, float v3, float alpha);
-        void stroke(float gray);
-        void stroke(const int gray) { stroke(static_cast<float>(gray)); }
-        void stroke(const double gray) { stroke(static_cast<float>(gray)); }
-        void stroke(float gray, float alpha);
-        void stroke(float v1, float v2, float v3);
-        void stroke(float v1, float v2, float v3, float alpha);
-
-        virtual void background_f(float a, float b, float c, float d = 1.0f);
-        virtual void background_f(float a);
-        virtual void background_color(color_t color);
+        void         background(const color_t color) { background_color(color); }
+        void         background(float gray);
+        void         background(const int gray) { background(static_cast<float>(gray)); }
+        void         background(const double gray) { background(static_cast<float>(gray)); }
+        void         background(float gray, float alpha);
+        void         background(float v1, float v2, float v3);
+        void         background(float v1, float v2, float v3, float alpha);
         virtual void background(PImage* img);
         // clear()
         virtual void colorMode(ColorMode mode, float max);
         virtual void colorMode(ColorMode mode, float max1, float max2, float max3);
         virtual void colorMode(ColorMode mode, float max1, float max2, float max3, float maxA);
+        virtual void noFill();
+        void         fill(const color_t color) { fill_color(color); }
+        void         fill(float gray);
+        void         fill(const int gray) { fill(static_cast<float>(gray)); }
+        void         fill(const double gray) { fill(static_cast<float>(gray)); }
+        void         fill(float gray, float alpha);
+        void         fill(float v1, float v2, float v3);
+        void         fill(float v1, float v2, float v3, float alpha);
+        virtual void noStroke();
+        void         stroke(const color_t color) { stroke_color(color); }
+        void         stroke(float gray);
+        void         stroke(const int gray) { stroke(static_cast<float>(gray)); }
+        void         stroke(const double gray) { stroke(static_cast<float>(gray)); }
+        void         stroke(float gray, float alpha);
+        void         stroke(float v1, float v2, float v3);
+        void         stroke(float v1, float v2, float v3, float alpha);
+
+        // NOTE additional color functions below ignore 'colorMode()'
+
+        virtual void background_f(float a, float b, float c, float d = 1.0f);
+        virtual void background_f(float a);
+        virtual void background_color(color_t color);
         virtual void fill_f(float r, float g, float b, float alpha = 1.0f);
         virtual void fill_f(float gray, float alpha = 1.0f);
         virtual void fill_color(uint32_t c);
-        virtual void noFill();
-        virtual void noStroke();
         virtual void stroke_f(float r, float g, float b, float alpha = 1.0f);
-        virtual void stroke_f(float gray, float alpha);
-        virtual void stroke_f(float a);
+        virtual void stroke_f(float gray, float alpha = 1.0f);
         virtual void stroke_color(uint32_t c);
 
         // ## Transform

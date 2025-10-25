@@ -413,10 +413,6 @@ void PGraphics::stroke_color(const color_t c) {
     color_stroke.active = true;
 }
 
-void PGraphics::stroke_f(const float a) {
-    stroke_f(a, a, a);
-}
-
 void PGraphics::noStroke() {
     color_stroke.active = false;
 }
