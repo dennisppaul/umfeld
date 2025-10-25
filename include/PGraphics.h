@@ -100,37 +100,6 @@ namespace umfeld {
 
         /* --- implemented in base class PGraphics --- */
 
-        virtual void popMatrix();
-        virtual void pushMatrix();
-        virtual void resetMatrix();
-        virtual void printMatrix(const glm::mat4& matrix);
-        virtual void printMatrix();
-        virtual void translate(float x, float y, float z = 0.0f);
-        virtual void rotateX(float angle);
-        virtual void rotateY(float angle);
-        virtual void rotateZ(float angle);
-        virtual void rotate(float angle);
-        virtual void rotate(float angle, float x, float y, float z);
-        virtual void scale(float x);
-        virtual void scale(float x, float y);
-        virtual void scale(float x, float y, float z);
-
-        virtual void background(PImage* img);
-        virtual void background(float a, float b, float c, float d = 1.0f);
-        virtual void background(float a);
-        virtual void fill(float r, float g, float b, float alpha = 1.0f);
-        virtual void fill(float gray, float alpha = 1.0f);
-        virtual void fill_color(uint32_t c);
-        virtual void noFill();
-        virtual void stroke(float r, float g, float b, float alpha = 1.0f);
-        virtual void stroke(float gray, float alpha);
-        virtual void stroke(float a);
-        virtual void stroke_color(uint32_t c);
-        virtual void noStroke();
-        virtual void strokeWeight(float weight);
-        virtual void strokeJoin(int join);
-        virtual void strokeCap(int cap);
-
         // ## Shape
 
         // ### 2d Primitives
@@ -156,6 +125,84 @@ namespace umfeld {
         virtual void vertex(const Vertex& v);
         void         submit_stroke_shape(bool closed, bool force_transparent = false) const;
         void         submit_fill_shape(bool closed, bool force_transparent = false) const;
+
+        // ## Color
+
+        // ### Creating & Reading
+
+        float   alpha(color_t color) const;
+        float   blue(color_t color) const;
+        float   brightness(color_t color) const;
+        color_t color_f(float brightness, float alpha = 1.0f);
+        color_t color_f(float r, float g, float b);
+        color_t color_f(float r, float g, float b, float a);
+        float   green(color_t color) const;
+        float   hue(color_t color) const;
+        color_t lerpColor(color_t c1, color_t c2, float amt) const;
+        float   red(color_t color) const;
+        float   saturation(color_t color) const;
+
+        color_t color(float gray);
+        color_t color(float gray, float alpha);
+        color_t color(float v1, float v2, float v3);
+        color_t color(float v1, float v2, float v3, float alpha);
+
+        // ### Setting
+
+        void background(float gray);
+        void background(float gray, float alpha);
+        void background(float v1, float v2, float v3);
+        void background(float v1, float v2, float v3, float alpha);
+        void fill(float gray);
+        void fill(float gray, float alpha);
+        void fill(float v1, float v2, float v3);
+        void fill(float v1, float v2, float v3, float alpha);
+        void stroke(float gray);
+        void stroke(float gray, float alpha);
+        void stroke(float v1, float v2, float v3);
+        void stroke(float v1, float v2, float v3, float alpha);
+
+        virtual void background_f(float a, float b, float c, float d = 1.0f);
+        virtual void background_f(float a);
+        virtual void background_color(color_t color);
+        virtual void background(PImage* img);
+        // clear()
+        virtual void colorMode(ColorMode mode, float max);
+        virtual void colorMode(ColorMode mode, float max1, float max2, float max3);
+        virtual void colorMode(ColorMode mode, float max1, float max2, float max3, float maxA);
+        virtual void fill_f(float r, float g, float b, float alpha = 1.0f);
+        virtual void fill_f(float gray, float alpha = 1.0f);
+        virtual void fill_color(uint32_t c);
+        virtual void noFill();
+        virtual void noStroke();
+        virtual void stroke_f(float r, float g, float b, float alpha = 1.0f);
+        virtual void stroke_f(float gray, float alpha);
+        virtual void stroke_f(float a);
+        virtual void stroke_color(uint32_t c);
+
+        // ## Transform
+
+        // virtual void applyMatrix()
+        virtual void popMatrix();
+        virtual void printMatrix(const glm::mat4& matrix);
+        virtual void printMatrix();
+        virtual void pushMatrix();
+        virtual void resetMatrix();
+        virtual void rotateX(float angle);
+        virtual void rotateY(float angle);
+        virtual void rotateZ(float angle);
+        virtual void rotate(float angle);
+        virtual void rotate(float angle, float x, float y, float z);
+        virtual void scale(float x);
+        virtual void scale(float x, float y);
+        virtual void scale(float x, float y, float z);
+        // virtual void shearX()
+        // virtual void shearY()
+        virtual void translate(float x, float y, float z = 0.0f);
+
+        virtual void strokeWeight(float weight);
+        virtual void strokeJoin(int join);
+        virtual void strokeCap(int cap);
 
         // ## Structure
 
@@ -333,6 +380,12 @@ namespace umfeld {
         void (*stroke_emitter_callback)(std::vector<Vertex>&, bool){nullptr};
         bool current_force_transparent{false};
 
+        struct ColorModeState {
+            ColorMode mode  = RGB;
+            glm::vec4 range = glm::vec4(DEFAULT_COLOR_RANGE);
+        };
+        ColorModeState color_mode_state;
+
     public:
         glm::mat4              model_matrix{};
         glm::mat4              view_matrix{};
@@ -403,6 +456,8 @@ namespace umfeld {
                 stack.pop_back();
             }
         }
+
+        void interpret_color_mode(glm::vec4& color, float v1, float v2, float v3, float alpha) const;
 
         void resize_ellipse_points_LUT();
         void update_projection_matrix(const glm::mat4& proj);

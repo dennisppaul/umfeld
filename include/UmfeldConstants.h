@@ -30,6 +30,7 @@
 #include "SDL3/SDL_scancode.h"
 
 namespace umfeld {
+    [[deprecated("use 'color_t' instead")]]
     typedef uint32_t color_32;
     typedef uint32_t color_t;
 
@@ -61,6 +62,7 @@ namespace umfeld {
     static constexpr int      DEFAULT_BYTES_PER_PIXELS      = 4;
     static constexpr int      DEFAULT_SPHERE_RESOLUTION     = 15;
     static constexpr uint32_t DEFAULT_BACKGROUND_COLOR      = 0x202020FF;
+    static constexpr float    DEFAULT_COLOR_RANGE           = 1.0f;
     static constexpr int      AUDIO_DEVICE_FIND_BY_NAME     = -2;
     static constexpr int      AUDIO_DEVICE_NOT_FOUND        = -3;
     static constexpr int      AUDIO_UNIT_NOT_INITIALIZED    = -4;
@@ -86,7 +88,6 @@ namespace umfeld {
         CENTER,
         MIDDLE,
     };
-
     enum ShapeMode {
         INHERIT = 0x10,
         TRIANGLES,

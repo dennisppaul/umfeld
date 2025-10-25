@@ -212,26 +212,7 @@ namespace umfeld {
 
     // ### Creating & Reading
 
-    color_32 color(float brightness);
-    color_32 color(float brightness, float alpha);
-    color_32 color(float r, float g, float b);
-    color_32 color(float r, float g, float b, float a);
-
-    color_32 color_8(uint8_t gray);
-    color_32 color_8(uint8_t gray, uint8_t alpha);
-    color_32 color_8(uint8_t r, uint8_t g, uint8_t b);
-    color_32 color_8(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-
-    float    red(color_32 color);
-    float    green(color_32 color);
-    float    blue(color_32 color);
-    float    alpha(color_32 color);
-    float    brightness(color_32 color);
-    float    hue(color_32 color);
-    float    saturation(color_32 color);
-    color_32 lerpColor(color_32 c1, color_32 c2, float amt);
-    void     rgb_to_hsb(float r, float g, float b, float& h, float& s, float& v);
-    void     hsb_to_rgb(float h, float s, float v, float& r, float& g, float& b);
+    // moved to `UmfeldFunctions.h` // TODO link to header file in comment
 
     // ## Environment
 

@@ -38,19 +38,11 @@ namespace umfeld {
 
         void strokeWeight(float weight) override {}
 
-        void background(const float a, const float b, const float c, const float d = 1.0f) override {
+        void background_f(const float a, const float b, const float c, const float d = 1.0f) override {
             if (renderer == nullptr) {
                 return;
             }
             SDL_SetRenderDrawColorFloat(renderer, a, b, c, d);
-            SDL_RenderClear(renderer);
-        }
-
-        void background(const float a) override {
-            if (renderer == nullptr) {
-                return;
-            }
-            SDL_SetRenderDrawColorFloat(renderer, a, a, a, 1);
             SDL_RenderClear(renderer);
         }
 

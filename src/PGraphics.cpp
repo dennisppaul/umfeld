@@ -42,8 +42,8 @@ using namespace umfeld;
 
 PGraphics::PGraphics() : PImage(0, 0), debug_font(new UFont()) {
     flip_y_texcoords = true;
-    PGraphics::fill(1.0f);
-    PGraphics::stroke(0.0f);
+    PGraphics::fill_f(1.0f);
+    PGraphics::stroke_f(0.0f);
     PGraphics::ellipseDetail(ELLIPSE_DETAIL_DEFAULT);
     generate_box(box_fill_vertices_LUT, true);
     generate_box(box_stroke_vertices_LUT, false);
@@ -136,24 +136,290 @@ void PGraphics::stroke_properties(const float stroke_join_round_resolution,
     this->current_stroke_state.stroke_join_miter_max_angle  = stroke_join_miter_max_angle;
 }
 
+// ## Color
+
+// ### Creating & Reading
+
+float PGraphics::alpha(const color_t color) const {
+    float alpha = static_cast<float>((color & 0x000000FF) >> 0) / 255.0f;
+    alpha       = map(alpha, 0.0, 1.0, 0.0, color_mode_state.range.a);
+    return alpha;
+}
+
+float PGraphics::blue(const color_t color) const {
+    float blue = static_cast<float>((color & 0x0000FF00) >> 8) / 255.0f;
+    blue       = map(blue, 0.0, 1.0, 0.0, color_mode_state.range.b);
+    return blue;
+}
+
+float PGraphics::green(const color_t color) const {
+    float green = static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f;
+    green       = map(green, 0.0, 1.0, 0.0, color_mode_state.range.g);
+    return green;
+}
+
+float PGraphics::red(const color_t color) const {
+    float red = static_cast<float>((color & 0xFF000000) >> 24) / 255.0f;
+    red       = map(red, 0.0, 1.0, 0.0, color_mode_state.range.r);
+    return red;
+}
+
+float PGraphics::hue(const uint32_t color) const {
+    const float r = static_cast<float>((color & 0xFF000000) >> 24) / 255.0f;
+    const float g = static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f;
+    const float b = static_cast<float>((color & 0x0000FF00) >> 8) / 255.0f;
+    float       h, s, v;
+    rgb_to_hsb_f(r, g, b, h, s, v);
+    h = map(h, 0.0, 1.0, 0.0, color_mode_state.range.r);
+    return h;
+}
+
+float PGraphics::saturation(const uint32_t color) const {
+    const float r = static_cast<float>((color & 0xFF000000) >> 24) / 255.0f;
+    const float g = static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f;
+    const float b = static_cast<float>((color & 0x0000FF00) >> 8) / 255.0f;
+    float       h, s, v;
+    rgb_to_hsb_f(r, g, b, h, s, v);
+    s = map(s, 0.0, 1.0, 0.0, color_mode_state.range.g);
+    return s;
+}
+
+
+float PGraphics::brightness(const uint32_t color) const {
+    const float r = static_cast<float>((color & 0xFF000000) >> 24) / 255.0f;
+    const float g = static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f;
+    const float b = static_cast<float>((color & 0x0000FF00) >> 8) / 255.0f;
+    float       h, s, v;
+    rgb_to_hsb_f(r, g, b, h, s, v);
+    v = map(v, 0.0, 1.0, 0.0, color_mode_state.range.g);
+    return v;
+}
+
+color_t PGraphics::color(const float gray) {
+    return color(gray, gray, gray, 1.0);
+}
+
+color_t PGraphics::color(const float gray, const float alpha) {
+    return color(gray, gray, gray, alpha);
+}
+
+color_t PGraphics::color(const float v1, const float v2, const float v3) {
+    return color(v1, v2, v3, 1.0);
+}
+
+color_t PGraphics::color(const float v1, const float v2, const float v3, const float alpha) {
+    glm::vec4 _color;
+    interpret_color_mode(_color, v1, v2, v3, alpha);
+    return color_f(_color.r, _color.g, _color.b, _color.a);
+}
+
+color_t PGraphics::color_f(const float brightness, const float alpha) {
+    return color_f(brightness, brightness, brightness, alpha);
+}
+
+color_t PGraphics::color_f(const float r, const float g, const float b) {
+    return color_f(r, g, b, 1);
+}
+
+color_t PGraphics::color_f(const float r, const float g, const float b, const float a) {
+    return static_cast<uint32_t>(a * 255) << 24 |
+           static_cast<uint32_t>(b * 255) << 16 |
+           static_cast<uint32_t>(g * 255) << 8 |
+           static_cast<uint32_t>(r * 255);
+}
+
+color_t PGraphics::lerpColor(const color_t c1, const color_t c2, float amt) const {
+    amt = std::clamp(amt, 0.0f, 1.0f);
+    glm::vec4 cn1;
+    color_unpack_f(c1, cn1.r, cn1.g, cn1.b, cn1.a);
+    glm::vec4 cn2;
+    color_unpack_f(c2, cn2.r, cn2.g, cn2.b, cn2.a);
+    glm::vec4 ci;
+
+    ci.r = cn1.r * (1 - amt) + cn2.r * amt;
+    ci.g = cn1.g * (1 - amt) + cn2.g * amt;
+    ci.b = cn1.b * (1 - amt) + cn2.b * amt;
+    ci.a = cn1.a * (1 - amt) + cn2.a * amt;
+
+    return color_pack_f(ci.r, ci.g, ci.b, ci.a);
+}
+
+// ### Setting
+
+void PGraphics::background(const float gray) {
+    background(gray, gray, gray, 1.0);
+}
+
+void PGraphics::background(const float gray, const float alpha) {
+    background(gray, gray, gray, alpha);
+}
+
+void PGraphics::background(const float v1, const float v2, const float v3) {
+    background(v1, v2, v3, 1.0);
+}
+
+void PGraphics::background(const float v1, const float v2, const float v3, const float alpha) {
+    glm::vec4 _color;
+    interpret_color_mode(_color, v1, v2, v3, alpha);
+    background_f(_color.r, _color.g, _color.b, _color.a);
+}
+
+
 void PGraphics::background(PImage* img) {
-    background(0, 0, 0, 0);
-    fill(1);
+    background_f(0, 0, 0, 0);
+    fill_f(1);
     image(img, 0, 0, framebuffer.width, framebuffer.height);
 }
 
-void PGraphics::background(const float a) {
-    background(a, a, a);
+void PGraphics::background_f(const float a) {
+    background_f(a, a, a);
 }
 
-void PGraphics::background(const float a, const float b, const float c, const float d) {
+void PGraphics::background_f(const float a, const float b, const float c, const float d) {
     static bool emitted_warning = false;
     if (!emitted_warning) {
         if (a < 0 || a > 1 || b < 0 || b > 1 || c < 0 || c > 1 || d < 0 || d > 1) {
-            warning("`background()` values should be in range [0, 1].");
+            warning("`background_f()` values should be in range [0, 1].");
         }
         emitted_warning = true;
     }
+}
+
+void PGraphics::background_color(const color_t color) {
+    glm::vec4 _color;
+    color_unpack_f(color, _color.r, _color.g, _color.b, _color.a);
+    background_f(_color.r, _color.g, _color.b, _color.a);
+}
+
+void PGraphics::colorMode(const ColorMode mode, const float max) {
+    color_mode_state.mode    = mode;
+    color_mode_state.range.r = max;
+    color_mode_state.range.g = max;
+    color_mode_state.range.b = max;
+    color_mode_state.range.a = max;
+}
+
+void PGraphics::colorMode(const ColorMode mode, const float max1, const float max2, const float max3) {
+    color_mode_state.mode    = mode;
+    color_mode_state.range.r = max1;
+    color_mode_state.range.g = max2;
+    color_mode_state.range.b = max3;
+}
+
+void PGraphics::colorMode(const ColorMode mode, const float max1, const float max2, const float max3, const float maxA) {
+    color_mode_state.mode    = mode;
+    color_mode_state.range.r = max1;
+    color_mode_state.range.g = max2;
+    color_mode_state.range.b = max3;
+    color_mode_state.range.a = maxA;
+}
+
+void PGraphics::fill(const float gray) {
+    fill(gray, gray, gray, 1.0);
+}
+
+void PGraphics::fill(const float gray, const float alpha) {
+    fill(gray, gray, gray, alpha);
+}
+
+void PGraphics::fill(const float v1, const float v2, const float v3) {
+    fill(v1, v2, v3, 1.0);
+}
+
+void PGraphics::fill(const float v1, const float v2, const float v3, const float alpha) {
+    interpret_color_mode(color_fill, v1, v2, v3, alpha);
+    color_fill.active = true;
+}
+
+void PGraphics::fill_f(const float gray, const float alpha) {
+    fill_f(gray, gray, gray, alpha);
+}
+
+void PGraphics::fill_f(const float r, const float g, const float b, const float alpha) {
+    static bool emitted_warning = false;
+    if (!emitted_warning) {
+        if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || alpha < 0 || alpha > 1) {
+            warning("`fill_f()` values should be in range [0, 1].");
+        }
+        emitted_warning = true;
+    }
+    color_fill.r      = r;
+    color_fill.g      = g;
+    color_fill.b      = b;
+    color_fill.a      = alpha;
+    color_fill.active = true;
+}
+
+void PGraphics::fill_color(const color_t c) {
+    color_unpack_f(c, color_fill.r, color_fill.g, color_fill.b, color_fill.a);
+    console_in_function("RGBA(", color_fill.r, ", ", color_fill.g, ", ", color_fill.b, ", ", color_fill.a, ")");
+    color_fill.active = true;
+}
+
+void PGraphics::noFill() {
+    color_fill.active = false;
+}
+
+void PGraphics::stroke(const float gray) {
+    stroke(gray, gray, gray, 1.0);
+}
+
+void PGraphics::stroke(const float gray, const float alpha) {
+    stroke(gray, gray, gray, alpha);
+}
+
+void PGraphics::stroke(const float v1, const float v2, const float v3) {
+    stroke(v1, v2, v3, 1.0);
+}
+
+void PGraphics::stroke(const float v1, const float v2, const float v3, const float alpha) {
+    interpret_color_mode(color_stroke, v1, v2, v3, alpha);
+    color_stroke.active = true;
+}
+
+void PGraphics::stroke_f(const float r, const float g, const float b, const float alpha) {
+    static bool emitted_warning = false;
+    if (!emitted_warning) {
+        if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || alpha < 0 || alpha > 1) {
+            warning("`stroke_f()` values should be in range [0, 1].");
+        }
+        emitted_warning = true;
+    }
+
+    color_stroke.r      = r;
+    color_stroke.g      = g;
+    color_stroke.b      = b;
+    color_stroke.a      = alpha;
+    color_stroke.active = true;
+}
+
+void PGraphics::stroke_f(const float gray, const float alpha) {
+    static bool emitted_warning = false;
+    if (!emitted_warning) {
+        if (gray < 0 || gray > 1 || alpha < 0 || alpha > 1) {
+            warning("`stroke()` values should be in range [0, 1].");
+        }
+        emitted_warning = true;
+    }
+
+    color_stroke.r      = gray;
+    color_stroke.g      = gray;
+    color_stroke.b      = gray;
+    color_stroke.a      = alpha;
+    color_stroke.active = true;
+}
+
+void PGraphics::stroke_color(const color_t c) {
+    color_unpack_f(c, color_stroke.r, color_stroke.g, color_stroke.b, color_stroke.a);
+    color_stroke.active = true;
+}
+
+void PGraphics::stroke_f(const float a) {
+    stroke_f(a, a, a);
+}
+
+void PGraphics::noStroke() {
+    color_stroke.active = false;
 }
 
 /* --- transform matrices --- */
@@ -164,7 +430,6 @@ void PGraphics::popMatrix() {
         model_matrix_stack.pop_back();
     }
 }
-
 
 void PGraphics::pushMatrix() {
     model_matrix_stack.push_back(model_matrix);
@@ -231,82 +496,6 @@ void PGraphics::scale(const float x, const float y) {
 void PGraphics::scale(const float x, const float y, const float z) {
     model_matrix       = glm::scale(model_matrix, glm::vec3(x, y, z));
     model_matrix_dirty = true;
-}
-
-/* --- color, stroke, and fill --- */
-
-void PGraphics::fill(const float r, const float g, const float b, const float alpha) {
-    // static bool emitted_warning = false;
-    // if (!emitted_warning) {
-    //     if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || alpha < 0 || alpha > 1) {
-    //         warning("`fill()` values should be in range [0, 1].");
-    //     }
-    //     emitted_warning = true;
-    // }
-    color_fill.r      = r;
-    color_fill.g      = g;
-    color_fill.b      = b;
-    color_fill.a      = alpha;
-    color_fill.active = true;
-}
-
-void PGraphics::fill(const float gray, const float alpha) {
-    fill(gray, gray, gray, alpha);
-}
-
-void PGraphics::fill_color(const color_t c) {
-    color_unpack(c, color_fill.r, color_fill.g, color_fill.b, color_fill.a);
-    console_in_function("RGBA(", color_fill.r, ", ", color_fill.g, ", ", color_fill.b, ", ", color_fill.a, ")");
-    color_fill.active = true;
-}
-
-void PGraphics::noFill() {
-    color_fill.active = false;
-}
-
-void PGraphics::stroke(const float r, const float g, const float b, const float alpha) {
-    static bool emitted_warning = false;
-    if (!emitted_warning) {
-        if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || alpha < 0 || alpha > 1) {
-            warning("`stroke()` values should be in range [0, 1].");
-        }
-        emitted_warning = true;
-    }
-
-    color_stroke.r      = r;
-    color_stroke.g      = g;
-    color_stroke.b      = b;
-    color_stroke.a      = alpha;
-    color_stroke.active = true;
-}
-
-void PGraphics::stroke(const float gray, const float alpha) {
-    static bool emitted_warning = false;
-    if (!emitted_warning) {
-        if (gray < 0 || gray > 1 || alpha < 0 || alpha > 1) {
-            warning("`stroke()` values should be in range [0, 1].");
-        }
-        emitted_warning = true;
-    }
-
-    color_stroke.r      = gray;
-    color_stroke.g      = gray;
-    color_stroke.b      = gray;
-    color_stroke.a      = alpha;
-    color_stroke.active = true;
-}
-
-void PGraphics::stroke_color(const color_t c) {
-    color_unpack(c, color_stroke.r, color_stroke.g, color_stroke.b, color_stroke.a);
-    color_stroke.active = true;
-}
-
-void PGraphics::stroke(const float a) {
-    stroke(a, a, a);
-}
-
-void PGraphics::noStroke() {
-    color_stroke.active = false;
 }
 
 void PGraphics::strokeWeight(const float weight) {
@@ -1658,8 +1847,29 @@ void PGraphics::convert_fill_shape_to_triangles(UShape& s) const {
     }
 }
 
-void PGraphics::set_shader_program(PShader* shader, ShaderProgramType shader_role) {
+void PGraphics::set_shader_program(PShader* shader, const ShaderProgramType shader_role) {
     if (shape_renderer != nullptr) {
         shape_renderer->set_shader_program(shader, shader_role);
+    }
+}
+
+void PGraphics::interpret_color_mode(glm::vec4& color, const float v1, const float v2, const float v3, const float alpha) const {
+    // internal color mode is RGBA normalized i.e `colorMode(RGB, 1.0, 1.0, 1.0, 1.0)`
+    if (color_mode_state.mode == RGB || color_mode_state.mode == RGBA) {
+        // normalize RGBA color
+        color.r = map(v1, 0.0, color_mode_state.range.r, 0.0, 1.0);
+        color.g = map(v2, 0.0, color_mode_state.range.g, 0.0, 1.0);
+        color.b = map(v3, 0.0, color_mode_state.range.b, 0.0, 1.0);
+        color.a = map(alpha, 0.0, color_mode_state.range.a, 0.0, 1.0);
+        console_in_function("RGBA(", color.r, ", ", color.g, ", ", color.b, ", ", color.a, ")");
+        return;
+    }
+    if (color_mode_state.mode == HSB) {
+        // *normalize* HSB + alpha color
+        const float h = map(v1, 0.0, color_mode_state.range.r, 0.0, 360.0);  // h
+        const float s = map(v2, 0.0, color_mode_state.range.g, 0.0, 1.0);    // s
+        const float v = map(v3, 0.0, color_mode_state.range.b, 0.0, 1.0);    // b
+        color.a       = map(alpha, 0.0, color_mode_state.range.a, 0.0, 1.0); // a
+        hsb_to_rgb_f(h, s, v, color.r, color.g, color.b);
     }
 }

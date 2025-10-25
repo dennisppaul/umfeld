@@ -69,19 +69,115 @@ namespace umfeld {
         return str.substr(str.size() - suffix.size()) == suffix;
     }
 
-    void color_unpack(const uint32_t color, float& r, float& g, float& b, float& a) {
+    /**
+     * assumes a normalized color range ( i.e [0...1] )
+     * @param color
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     */
+    void color_unpack_f(const color_t color, float& r, float& g, float& b, float& a) {
         a = static_cast<float>(color >> 24 & 0xFF) / 255.0f;
         b = static_cast<float>(color >> 16 & 0xFF) / 255.0f;
         g = static_cast<float>(color >> 8 & 0xFF) / 255.0f;
         r = static_cast<float>(color & 0xFF) / 255.0f;
     }
 
-    uint32_t color_pack(const float r, const float g, const float b, const float a) {
+    /**
+     * assumes a normalized color range ( i.e [0...1] )
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @return
+     */
+    color_t color_pack_f(const float r, const float g, const float b, const float a) {
         const uint32_t ir = static_cast<uint32_t>(r * 255.0f) & 0xFF;
         const uint32_t ig = static_cast<uint32_t>(g * 255.0f) & 0xFF;
         const uint32_t ib = static_cast<uint32_t>(b * 255.0f) & 0xFF;
         const uint32_t ia = static_cast<uint32_t>(a * 255.0f) & 0xFF;
         return ia << 24 | ib << 16 | ig << 8 | ir;
+    }
+
+    /**
+     * assumes a normalized color range ( i.e [0...1] )
+     * @param r
+     * @param g
+     * @param b
+     * @param h
+     * @param s
+     * @param v
+     */
+    void rgb_to_hsb_f(const float r, const float g, const float b, float& h, float& s, float& v) {
+        const float max   = std::max(r, std::max(g, b));
+        const float min   = std::min(r, std::min(g, b));
+        const float delta = max - min;
+
+        v = max;
+        s = max == 0.0f ? 0.0f : delta / max;
+
+        if (delta == 0.0f) {
+            h = 0.0f; // undefined hue
+        } else {
+            if (max == r) {
+                h = fmodf((g - b) / delta, 6.0f);
+            } else if (max == g) {
+                h = (b - r) / delta + 2.0f;
+            } else {
+                h = (r - g) / delta + 4.0f;
+            }
+            h *= 60.0f;
+            if (h < 0.0f) {
+                h += 360.0f;
+            }
+        }
+    }
+
+    /**
+     * assumes a normalized color range ( i.e [0...1] )
+     * @param h
+     * @param s
+     * @param v
+     * @param r
+     * @param g
+     * @param b
+     */
+    void hsb_to_rgb_f(const float h, const float s, const float v, float& r, float& g, float& b) {
+        const float c = v * s;
+        const float x = c * (1.0f - fabsf(fmodf(h / 60.0f, 2.0f) - 1.0f));
+        const float m = v - c;
+
+        float rp, gp, bp;
+        if (h < 60.0f) {
+            rp = c;
+            gp = x;
+            bp = 0.0f;
+        } else if (h < 120.0f) {
+            rp = x;
+            gp = c;
+            bp = 0.0f;
+        } else if (h < 180.0f) {
+            rp = 0.0f;
+            gp = c;
+            bp = x;
+        } else if (h < 240.0f) {
+            rp = 0.0f;
+            gp = x;
+            bp = c;
+        } else if (h < 300.0f) {
+            rp = x;
+            gp = 0.0f;
+            bp = c;
+        } else {
+            rp = c;
+            gp = 0.0f;
+            bp = x;
+        }
+
+        r = rp + m;
+        g = gp + m;
+        b = bp + m;
     }
 
     bool file_exists(const std::string& file_path) {

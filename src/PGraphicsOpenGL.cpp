@@ -27,8 +27,8 @@
 #include "UShapeRenderer.h"
 
 namespace umfeld {
-    void PGraphicsOpenGL::background(const float a, const float b, const float c, const float d) {
-        PGraphics::background(a, b, c, d);
+    void PGraphicsOpenGL::background_f(const float a, const float b, const float c, const float d) {
+        PGraphics::background_f(a, b, c, d);
 
         GLboolean previous_depth_mask;
         glGetBooleanv(GL_DEPTH_WRITEMASK, &previous_depth_mask);
@@ -61,7 +61,7 @@ namespace umfeld {
     }
 
     void PGraphicsOpenGL::set_default_graphics_state() {
-        background(red(DEFAULT_BACKGROUND_COLOR),
+        background_f(red(DEFAULT_BACKGROUND_COLOR),
                    green(DEFAULT_BACKGROUND_COLOR),
                    blue(DEFAULT_BACKGROUND_COLOR),
                    alpha(DEFAULT_BACKGROUND_COLOR));

@@ -25,20 +25,215 @@
 #include "ShaderSource.h"
 
 namespace umfeld {
+
+    // ## Color
+
+    // ### Creating & Reading
+
+    float alpha(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->alpha(color);
+    }
+
+    float blue(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->blue(color);
+    }
+
+    float brightness(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->brightness(color);
+    }
+
+    color_t color(const float gray) {
+        if (g == nullptr) { return 0; }
+        return g->color(gray);
+    }
+
+    color_t color(const float gray, const float alpha) {
+        if (g == nullptr) { return 0; }
+        return g->color(gray, alpha);
+    }
+
+    color_t color(const float v1, const float v2, const float v3) {
+        if (g == nullptr) { return 0; }
+        return g->color(v1, v2, v3);
+    }
+
+    color_t color(const float v1, const float v2, const float v3, const float alpha) {
+        if (g == nullptr) { return 0; }
+        return g->color(v1, v2, v3, alpha);
+    }
+
+    color_t color_f(const float r, const float g, const float b, const float a) {
+        if (umfeld::g == nullptr) { return 0; }
+        return umfeld::g->color_f(r, g, b, a);
+    }
+
+    color_t color_f(const float brightness, const float alpha) {
+        if (g == nullptr) { return 0; }
+        return g->color_f(brightness, alpha);
+    }
+
+    float green(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->green(color);
+    }
+
+    float hue(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->hue(color);
+    }
+
+    color_t lerpColor(const color_t c1, const color_t c2, const float amt) {
+        if (g == nullptr) { return 0; }
+        return g->lerpColor(c1, c2, amt);
+    }
+
+    float red(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->red(color);
+    }
+
+    float saturation(const color_t color) {
+        if (g == nullptr) { return 0; }
+        return g->saturation(color);
+    }
+
+    // ### Setting
+
+    void colorMode(const ColorMode mode, const float max) {
+        if (g == nullptr) { return; }
+        g->colorMode(mode, max);
+    }
+
+    void colorMode(const ColorMode mode, const float max1, const float max2, const float max3) {
+        if (g == nullptr) { return; }
+        g->colorMode(mode, max1, max2, max3);
+    }
+
+    void colorMode(const ColorMode mode, const float max1, const float max2, const float max3, const float maxA) {
+        if (g == nullptr) { return; }
+        g->colorMode(mode, max1, max2, max3, maxA);
+    }
+
     void background(const float gray) {
         if (g == nullptr) { return; }
         g->background(gray);
     }
 
-    void background(const float r, const float g, const float b, const float a) {
-        if (umfeld::g == nullptr) { return; }
-        umfeld::g->background(r, g, b, a);
+    void background(const float gray, const float alpha) {
+        if (g == nullptr) { return; }
+        g->background(gray, alpha);
     }
 
-    void background(PImage* img) {
+    void background(const float v1, const float v2, const float v3) {
         if (g == nullptr) { return; }
-        g->background(img);
+        g->background(v1, v2, v3);
     }
+
+    void background(const float v1, const float v2, const float v3, const float alpha) {
+        if (g == nullptr) { return; }
+        g->background(v1, v2, v3, alpha);
+    }
+
+    void background(PImage* image) {
+        if (g == nullptr) { return; }
+        g->background(image);
+    }
+
+    void noFill() {
+        if (g == nullptr) { return; }
+        g->noFill();
+    }
+
+    void fill(const float gray) {
+        if (g == nullptr) { return; }
+        g->fill(gray);
+    }
+
+    void fill(const float gray, const float alpha) {
+        if (g == nullptr) { return; }
+        g->fill(gray, alpha);
+    }
+
+    void fill(const float v1, const float v2, const float v3) {
+        if (g == nullptr) { return; }
+        g->fill(v1, v2, v3);
+    }
+
+    void fill(const float v1, const float v2, const float v3, const float alpha) {
+        if (g == nullptr) { return; }
+        g->fill(v1, v2, v3, alpha);
+    }
+
+    void noStroke() {
+        if (g == nullptr) { return; }
+        g->noStroke();
+    }
+
+    void stroke(const float gray) {
+        if (g == nullptr) { return; }
+        g->stroke(gray);
+    }
+
+    void stroke(const float gray, const float alpha) {
+        if (g == nullptr) { return; }
+        g->stroke(gray, alpha);
+    }
+
+    void stroke(const float v1, const float v2, const float v3) {
+        if (g == nullptr) { return; }
+        g->stroke(v1, v2, v3);
+    }
+
+    void stroke(const float v1, const float v2, const float v3, const float alpha) {
+        if (g == nullptr) { return; }
+        g->stroke(v1, v2, v3, alpha);
+    }
+
+    // NOTE color functions below ignore 'colorMode()'
+
+    void fill_f(const float r, const float g, const float b, const float a) {
+        if (umfeld::g == nullptr) {
+            return;
+        }
+        umfeld::g->fill_f(r, g, b, a);
+    }
+
+    void fill_f(const float brightness, const float alpha) {
+        if (g == nullptr) { return; }
+        g->fill_f(brightness, alpha);
+    }
+
+    void fill_f(const float brightness) {
+        if (g == nullptr) { return; }
+        g->fill_f(brightness);
+    }
+
+    void fill_color(const color_t c) {
+        if (g == nullptr) { return; }
+        g->fill_color(c);
+    }
+
+    void background_f(const float gray) {
+        if (g == nullptr) { return; }
+        g->background_f(gray);
+    }
+
+    void background_f(const float r, const float g, const float b, const float a) {
+        if (umfeld::g == nullptr) { return; }
+        umfeld::g->background_f(r, g, b, a);
+    }
+
+    void background_color(const color_t color) {
+        if (umfeld::g == nullptr) { return; }
+        g->background_color(color);
+    }
+
+    // ## Shape
+
+    // ### Vertex
 
     void beginShape(const int shape) {
         if (g == nullptr) { return; }
@@ -49,6 +244,8 @@ namespace umfeld {
         if (g == nullptr) { return; }
         g->endShape(close_shape);
     }
+
+    // ### Curves
 
     void bezier(const float x1, const float y1, const float x2, const float y2, const float x3, const float y3, const float x4, const float y4) {
         if (g == nullptr) { return; }
@@ -88,33 +285,6 @@ namespace umfeld {
     void ellipseDetail(const int detail) {
         if (g == nullptr) { return; }
         g->ellipseDetail(detail);
-    }
-
-    void fill(const float r, const float g, const float b, const float a) {
-        if (umfeld::g == nullptr) {
-            return;
-        }
-        umfeld::g->fill(r, g, b, a);
-    }
-
-    void fill(const float brightness, const float alpha) {
-        if (g == nullptr) { return; }
-        g->fill(brightness, alpha);
-    }
-
-    void fill(const float brightness) {
-        if (g == nullptr) { return; }
-        g->fill(brightness);
-    }
-
-    void fill_color(const color_t c) {
-        if (g == nullptr) { return; }
-        g->fill_color(c);
-    }
-
-    void noFill() {
-        if (g == nullptr) { return; }
-        g->noFill();
     }
 
     void image(PImage* img, const float x, const float y, const float w, const float h) {
@@ -167,31 +337,26 @@ namespace umfeld {
         g->square(x, y, extent);
     }
 
-    void stroke(const float r, const float g, const float b, const float a) {
+    void stroke_f(const float r, const float g, const float b, const float a) {
         if (umfeld::g == nullptr) {
             return;
         }
-        umfeld::g->stroke(r, g, b, a);
+        umfeld::g->stroke_f(r, g, b, a);
     }
 
-    void stroke(const float brightness, const float alpha) {
+    void stroke_f(const float brightness, const float alpha) {
         if (g == nullptr) { return; }
-        g->stroke(brightness, alpha);
+        g->stroke_f(brightness, alpha);
     }
 
-    void stroke(const float brightness) {
+    void stroke_f(const float brightness) {
         if (g == nullptr) { return; }
-        g->stroke(brightness);
+        g->stroke_f(brightness);
     }
 
     void stroke_color(const color_t c) {
         if (g == nullptr) { return; }
         g->stroke_color(c);
-    }
-
-    void noStroke() {
-        if (g == nullptr) { return; }
-        g->noStroke();
     }
 
     void strokeWeight(const float weight) {
@@ -226,14 +391,6 @@ namespace umfeld {
         if (g == nullptr) { return; }
         g->vertex(x, y, z, u, v);
     }
-
-    // PFont* loadFont(const std::string& file, const float size) {
-    //     if (g == nullptr) {
-    //         error("`loadFont` is only available after `settings()` has finished");
-    //         return nullptr;
-    //     }
-    //     return g->loadFont(file, size);
-    // }
 
     void textFont(PFont* font) {
         if (g == nullptr) { return; }
@@ -593,9 +750,7 @@ namespace umfeld {
     }
 
     void updatePixels(const bool update_logical_buffer) {
-        if (g == nullptr) {
-            return;
-        }
+        if (g == nullptr) { return; }
 
         if (g->pixels == nullptr || pixels == nullptr) {
             error_in_function("pixels is null, cannot load pixels.");

@@ -131,7 +131,7 @@ namespace umfeld {
             auto_refresh_enabled = auto_refresh;
         }
 
-        void background(const float r, const float g, const float b, const float d) override {
+        void background_f(const float r, const float g, const float b, const float d) override {
             if (simple_clear || !has_colors()) {
                 clear();
                 current_background_pair = 0;

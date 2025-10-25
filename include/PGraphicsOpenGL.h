@@ -93,7 +93,7 @@ namespace umfeld {
 
         /* --- extended functionality --- */
 
-        void background(const float a, const float b, const float c, const float d) override;
+        void background_f(const float a, const float b, const float c, const float d) override;
         void beginDraw() override;
         void endDraw() override;
         void bind_framebuffer_texture() const;
