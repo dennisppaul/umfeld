@@ -25,9 +25,9 @@
 #include "ShaderSource.h"
 
 namespace umfeld {
-    void background(const float alpha) {
+    void background(const float gray) {
         if (g == nullptr) { return; }
-        g->background(alpha);
+        g->background(gray);
     }
 
     void background(const float r, const float g, const float b, const float a) {
@@ -107,9 +107,9 @@ namespace umfeld {
         g->fill(brightness);
     }
 
-    void fill_color_32(const uint32_t c) {
+    void fill_color(const color_t c) {
         if (g == nullptr) { return; }
-        g->fill_color_32(c);
+        g->fill_color(c);
     }
 
     void noFill() {
@@ -184,7 +184,7 @@ namespace umfeld {
         g->stroke(brightness);
     }
 
-    void stroke_color_32(const uint32_t c) {
+    void stroke_color(const color_t c) {
         if (g == nullptr) { return; }
         g->stroke_color(c);
     }

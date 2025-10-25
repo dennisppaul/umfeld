@@ -31,6 +31,7 @@
 
 namespace umfeld {
     typedef uint32_t color_32;
+    typedef uint32_t color_t;
 
 #ifndef UMFELD_APP_NAME
     static constexpr auto DEFAULT_WINDOW_TITLE = "Umfeld";
@@ -237,5 +238,15 @@ namespace umfeld {
         SHADER_PROGRAM_POINT, // TODO implement
         SHADER_PROGRAM_LINE,
         NUM_SHADER_PROGRAMS
+    };
+    enum SampleAcquisitionMode {
+        AUDIO_BLOCK,
+        AUDIO_PER_SAMPLE_NO_INPUT,
+        AUDIO_PER_SAMPLE_WITH_INPUT
+    };
+    enum ColorMode {
+        RGB,
+        RGBA,
+        HSB
     };
 } // namespace umfeld

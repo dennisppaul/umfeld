@@ -155,11 +155,20 @@ namespace umfeld {
 
         // Open the camera
         std::cout << "+++ Capture: opening camera: \"" << deviceName << "\"" << std::endl;
+
+#if LIBAVFORMAT_VERSION_MAJOR >= 60
         if (avformat_open_input(&formatContext, deviceName, inputFormat, &options) != 0) {
             std::cerr << "Failed to open camera" << std::endl;
             av_dict_free(&options);
             return -1;
         }
+#else
+        if (avformat_open_input(&formatContext, deviceName, const_cast<AVInputFormat*>(inputFormat), &options) != 0) {
+            std::cerr << "Failed to open camera" << std::endl;
+            av_dict_free(&options);
+            return -1;
+        }
+#endif
 
         // Retrieve stream information
         if (avformat_find_stream_info(formatContext, nullptr) < 0) {
@@ -507,7 +516,11 @@ namespace umfeld {
         av_dict_set(&options, "probesize", "10000000", 0);      // 1MB probe size
         av_dict_set(&options, "analyzeduration", "3000000", 0); // 5 seconds analysis duration
 
+#if LIBAVFORMAT_VERSION_MAJOR >= 59
         const AVInputFormat* inputFormat = av_find_input_format(get_platform_inputformat());
+#else
+        AVInputFormat* inputFormat = av_find_input_format(get_platform_inputformat());
+#endif
 
         if (!inputFormat) {
             std::cerr << "Input channels not found" << std::endl;
@@ -515,7 +528,22 @@ namespace umfeld {
         }
 
         // Intercept available devices log
-        avformat_open_input(&formatContext, "video=dummy", inputFormat, &options);
+        // avformat_open_input(&formatContext, "video=dummy", inputFormat, &options);
+#if LIBAVFORMAT_VERSION_MAJOR >= 60
+        int err = avformat_open_input(&formatContext, "video=dummy", inputFormat, &options);
+#else
+        int err = avformat_open_input(&formatContext, "video=dummy",
+                                      const_cast<AVInputFormat*>(inputFormat),
+                                      &options);
+#endif
+        if (err != 0) {
+            char err_buf[AV_ERROR_MAX_STRING_SIZE];
+            av_strerror(err, err_buf, AV_ERROR_MAX_STRING_SIZE);
+            std::cerr << "Failed to open input: " << err_buf << std::endl;
+            av_dict_free(&options);
+            avformat_free_context(formatContext);
+            return devices;
+        }
 
         // Convert logStream to a string and parse it
         const std::string  logOutput = logStream.str();

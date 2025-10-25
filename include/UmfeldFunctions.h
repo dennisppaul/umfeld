@@ -231,6 +231,7 @@ namespace umfeld {
     float    saturation(color_32 color);
     color_32 lerpColor(color_32 c1, color_32 c2, float amt);
     void     rgb_to_hsb(float r, float g, float b, float& h, float& s, float& v);
+    void     hsb_to_rgb(float h, float s, float v, float& r, float& g, float& b);
 
     // ## Environment
 

@@ -38,9 +38,11 @@ namespace umfeld {
     /* public variables used for *initialization only*  */
 
     /* --- audio  --- */
-    inline bool enable_audio                       = false;
-    inline int  audio_unique_device_id             = 0x0010;
-    inline bool enable_audio_per_sample_processing = false;
+    [[deprecated("use 'audio_sample_acquisition_mode' instead")]]
+    inline bool                  enable_audio_per_sample_processing = false;
+    inline SampleAcquisitionMode audio_sample_acquisition_mode      = AUDIO_BLOCK;
+    inline bool                  enable_audio                       = false;
+    inline int                   audio_unique_device_id             = 0x0010;
     // inline int        audio_format       = 0; // TODO currently only supporting F32
 
     /* --- graphics --- */

@@ -120,7 +120,7 @@ namespace umfeld {
         virtual void background(float a);
         virtual void fill(float r, float g, float b, float alpha = 1.0f);
         virtual void fill(float gray, float alpha = 1.0f);
-        virtual void fill_color_32(uint32_t c);
+        virtual void fill_color(uint32_t c);
         virtual void noFill();
         virtual void stroke(float r, float g, float b, float alpha = 1.0f);
         virtual void stroke(float gray, float alpha);

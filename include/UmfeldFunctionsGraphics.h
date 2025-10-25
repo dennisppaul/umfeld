@@ -26,19 +26,22 @@
 
 namespace umfeld {
 
-    void        background(float alpha);
+    void        background(float gray);
     void        background(float r, float g, float b, float a = 1.0);
     void        background(PImage* img);
     void        fill(float r, float g, float b, float a = 1.0);
     void        fill(float brightness, float alpha);
     void        fill(float brightness);
-    void        fill_color_32(color_32 c);
+    void        fill_color(color_32 c);
     void        noFill();
     void        stroke(float r, float g, float b, float a = 1.0);
     void        stroke(float brightness, float alpha);
     void        stroke(float brightness);
-    void        stroke_color_32(color_32 c);
+    void        stroke_color(color_32 c);
     void        noStroke();
+
+    inline void fill_color_32(const color_32 c) { fill_color(c); }
+    inline void stroke_color_32(const color_32 c) { stroke_color(c); }
     inline void background_8(const uint8_t brightness) { background(static_cast<float>(brightness) / 255.0f); }
     inline void background_8(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a = 255) {
         background(static_cast<float>(r) / 255.0f,
@@ -62,10 +65,9 @@ namespace umfeld {
                static_cast<float>(b) / 255.0f,
                static_cast<float>(a) / 255.0f);
     }
-    inline void stroke_8(const uint8_t brightness, const uint8_t alpha) {
-        stroke(static_cast<float>(brightness) / 255.0f, static_cast<float>(alpha) / 255.0f);
-    }
+    inline void stroke_8(const uint8_t brightness, const uint8_t alpha) { stroke(static_cast<float>(brightness) / 255.0f, static_cast<float>(alpha) / 255.0f); }
     inline void stroke_8(const uint8_t alpha) { stroke(static_cast<float>(alpha) / 255.0f); }
+    
     void        beginShape(int shape = POLYGON);
     void        endShape(bool close_shape = false);
     void        bezier(float x1, float y1,

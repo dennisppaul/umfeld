@@ -76,12 +76,11 @@ namespace umfeld {
         r = static_cast<float>(color & 0xFF) / 255.0f;
     }
 
-    uint32_t color_pack(float r, float g, float b, float a) {
+    uint32_t color_pack(const float r, const float g, const float b, const float a) {
         const uint32_t ir = static_cast<uint32_t>(r * 255.0f) & 0xFF;
         const uint32_t ig = static_cast<uint32_t>(g * 255.0f) & 0xFF;
         const uint32_t ib = static_cast<uint32_t>(b * 255.0f) & 0xFF;
         const uint32_t ia = static_cast<uint32_t>(a * 255.0f) & 0xFF;
-
         return ia << 24 | ib << 16 | ig << 8 | ir;
     }
 

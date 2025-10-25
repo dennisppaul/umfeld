@@ -236,14 +236,13 @@ void PGraphics::scale(const float x, const float y, const float z) {
 /* --- color, stroke, and fill --- */
 
 void PGraphics::fill(const float r, const float g, const float b, const float alpha) {
-    static bool emitted_warning = false;
-    if (!emitted_warning) {
-        if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || alpha < 0 || alpha > 1) {
-            warning("`fill()` values should be in range [0, 1].");
-        }
-        emitted_warning = true;
-    }
-
+    // static bool emitted_warning = false;
+    // if (!emitted_warning) {
+    //     if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || alpha < 0 || alpha > 1) {
+    //         warning("`fill()` values should be in range [0, 1].");
+    //     }
+    //     emitted_warning = true;
+    // }
     color_fill.r      = r;
     color_fill.g      = g;
     color_fill.b      = b;
@@ -255,8 +254,9 @@ void PGraphics::fill(const float gray, const float alpha) {
     fill(gray, gray, gray, alpha);
 }
 
-void PGraphics::fill_color_32(const uint32_t c) {
+void PGraphics::fill_color(const color_t c) {
     color_unpack(c, color_fill.r, color_fill.g, color_fill.b, color_fill.a);
+    console_in_function("RGBA(", color_fill.r, ", ", color_fill.g, ", ", color_fill.b, ", ", color_fill.a, ")");
     color_fill.active = true;
 }
 
@@ -296,7 +296,7 @@ void PGraphics::stroke(const float gray, const float alpha) {
     color_stroke.active = true;
 }
 
-void PGraphics::stroke_color(const uint32_t c) {
+void PGraphics::stroke_color(const color_t c) {
     color_unpack(c, color_stroke.r, color_stroke.g, color_stroke.b, color_stroke.a);
     color_stroke.active = true;
 }

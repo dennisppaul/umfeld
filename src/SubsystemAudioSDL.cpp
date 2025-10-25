@@ -332,7 +332,19 @@ namespace umfeld::subsystem {
                 if (!SDL_AudioStreamDevicePaused(_stream)) {
                     const int request_num_sample_frames = _device->audio_device->buffer_size;
                     if (SDL_GetAudioStreamQueued(_stream) < request_num_sample_frames) {
-                        // NOTE for main audio device
+                        // NOTE acquire samples from main audio device
+                        // if (audio_device != nullptr) {
+                        //     if (_device->audio_device == audio_device) {
+                        //         switch (audio_sample_acquisition_mode) {
+                        //             case AUDIO_BLOCK:
+                        //                 break;
+                        //             case AUDIO_PER_SAMPLE_NO_INPUT:
+                        //                 break;
+                        //             case AUDIO_PER_SAMPLE_WITH_INPUT:
+                        //                 break;
+                        //         }
+                        //     }
+                        // }
                         if (audio_device != nullptr) {
                             if (_device->audio_device == audio_device) {
                                 run_audioEvent_callback();
