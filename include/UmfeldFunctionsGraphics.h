@@ -54,25 +54,30 @@ namespace umfeld {
 
     // ### Setting
 
-    void colorMode(ColorMode mode, float max);
-    void colorMode(ColorMode mode, float max1, float max2, float max3);
-    void colorMode(ColorMode mode, float max1, float max2, float max3, float maxA);
-
-    void background(float gray);
-    void background(float gray, float alpha);
-    void background(float v1, float v2, float v3);
-    void background(float v1, float v2, float v3, float alpha);
-    void background(PImage* image);
-    void noFill();
-    void fill(float gray);
-    void fill(float gray, float alpha);
-    void fill(float v1, float v2, float v3);
-    void fill(float v1, float v2, float v3, float alpha);
-    void noStroke();
-    void stroke(float gray);
-    void stroke(float gray, float alpha);
-    void stroke(float v1, float v2, float v3);
-    void stroke(float v1, float v2, float v3, float alpha);
+    void        colorMode(ColorMode mode, float max);
+    void        colorMode(ColorMode mode, float max1, float max2, float max3);
+    void        colorMode(ColorMode mode, float max1, float max2, float max3, float maxA);
+    void        background(float gray);
+    inline void background(const int gray) { background(static_cast<float>(gray)); }
+    inline void background(const double gray) { background(static_cast<float>(gray)); }
+    void        background(float gray, float alpha);
+    void        background(float v1, float v2, float v3);
+    void        background(float v1, float v2, float v3, float alpha);
+    void        background(PImage* image);
+    void        noFill();
+    void        fill(float gray);
+    inline void fill(const int gray) { fill(static_cast<float>(gray)); }
+    inline void fill(const double gray) { fill(static_cast<float>(gray)); }
+    void        fill(float gray, float alpha);
+    void        fill(float v1, float v2, float v3);
+    void        fill(float v1, float v2, float v3, float alpha);
+    void        noStroke();
+    void        stroke(float gray);
+    inline void stroke(const int gray) { stroke(static_cast<float>(gray)); }
+    inline void stroke(const double gray) { stroke(static_cast<float>(gray)); }
+    void        stroke(float gray, float alpha);
+    void        stroke(float v1, float v2, float v3);
+    void        stroke(float v1, float v2, float v3, float alpha);
 
     // NOTE color functions below ignore 'colorMode()'
 
@@ -85,6 +90,7 @@ namespace umfeld {
                      static_cast<float>(b) / 255.0f,
                      static_cast<float>(a) / 255.0f);
     }
+    void        background(color_t color);
     void        background_color(color_t color);
     void        fill_f(float r, float g, float b, float a = 1.0f);
     void        fill_f(float brightness, float alpha = 1.0f);
@@ -98,6 +104,7 @@ namespace umfeld {
         fill_f(static_cast<float>(brightness) / 255.0f, static_cast<float>(alpha) / 255.0f);
     }
     inline void fill_8(const uint8_t alpha) { fill_f(static_cast<float>(alpha) / 255.0f); }
+    void        fill(color_t c);
     void        fill_color(color_t c);
     void        stroke_f(float r, float g, float b, float a = 1.0f);
     void        stroke_f(float brightness, float alpha = 1.0);
@@ -109,6 +116,7 @@ namespace umfeld {
     }
     inline void stroke_8(const uint8_t brightness, const uint8_t alpha) { stroke_f(static_cast<float>(brightness) / 255.0f, static_cast<float>(alpha) / 255.0f); }
     inline void stroke_8(const uint8_t alpha) { stroke_f(static_cast<float>(alpha) / 255.0f); }
+    void        stroke(color_t c);
     void        stroke_color(color_t c);
 
     // ## Shape

@@ -147,7 +147,6 @@ namespace umfeld {
         frame_state_cache.reset();
 
         if (graphics->get_render_mode() == RENDER_MODE_SORTED_BY_Z_ORDER) {
-
             // NOTE Z-ORDER RENDER MODE PATH
             //      ├── OPAQUE
             //      │   ├── ( BATCH_ ) textured+flat shapes

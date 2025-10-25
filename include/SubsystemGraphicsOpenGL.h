@@ -34,7 +34,7 @@ namespace umfeld {
         int  depth_buffer_depth   = 24;
         int  stencil_buffer_depth = 8;
         bool double_buffered      = true;
-        bool sRGB                 = false;
+        bool sRGB                 = false; // TODO sRGB is WIP
     };
 
     void OGL_draw_pre();

@@ -211,9 +211,41 @@ namespace umfeld {
         g->fill_f(brightness);
     }
 
+    void fill(const color_t c) {
+        if (g == nullptr) { return; }
+        g->fill_color(c);
+    }
+
     void fill_color(const color_t c) {
         if (g == nullptr) { return; }
         g->fill_color(c);
+    }
+
+    void stroke_f(const float r, const float g, const float b, const float a) {
+        if (umfeld::g == nullptr) {
+            return;
+        }
+        umfeld::g->stroke_f(r, g, b, a);
+    }
+
+    void stroke_f(const float brightness, const float alpha) {
+        if (g == nullptr) { return; }
+        g->stroke_f(brightness, alpha);
+    }
+
+    void stroke_f(const float brightness) {
+        if (g == nullptr) { return; }
+        g->stroke_f(brightness);
+    }
+
+    void stroke_color(const color_t c) {
+        if (g == nullptr) { return; }
+        g->stroke_color(c);
+    }
+
+    void stroke(const color_t c) {
+        if (g == nullptr) { return; }
+        g->stroke_color(c);
     }
 
     void background_f(const float gray) {
@@ -226,8 +258,13 @@ namespace umfeld {
         umfeld::g->background_f(r, g, b, a);
     }
 
+    void background(const color_t color) {
+        if (g == nullptr) { return; }
+        g->background_color(color);
+    }
+
     void background_color(const color_t color) {
-        if (umfeld::g == nullptr) { return; }
+        if (g == nullptr) { return; }
         g->background_color(color);
     }
 
@@ -335,28 +372,6 @@ namespace umfeld {
     void square(const float x, const float y, const float extent) {
         if (g == nullptr) { return; }
         g->square(x, y, extent);
-    }
-
-    void stroke_f(const float r, const float g, const float b, const float a) {
-        if (umfeld::g == nullptr) {
-            return;
-        }
-        umfeld::g->stroke_f(r, g, b, a);
-    }
-
-    void stroke_f(const float brightness, const float alpha) {
-        if (g == nullptr) { return; }
-        g->stroke_f(brightness, alpha);
-    }
-
-    void stroke_f(const float brightness) {
-        if (g == nullptr) { return; }
-        g->stroke_f(brightness);
-    }
-
-    void stroke_color(const color_t c) {
-        if (g == nullptr) { return; }
-        g->stroke_color(c);
     }
 
     void strokeWeight(const float weight) {

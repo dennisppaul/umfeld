@@ -352,7 +352,6 @@ void PGraphics::fill_f(const float r, const float g, const float b, const float 
 
 void PGraphics::fill_color(const color_t c) {
     color_unpack_f(c, color_fill.r, color_fill.g, color_fill.b, color_fill.a);
-    console_in_function("RGBA(", color_fill.r, ", ", color_fill.g, ", ", color_fill.b, ", ", color_fill.a, ")");
     color_fill.active = true;
 }
 
@@ -1861,7 +1860,6 @@ void PGraphics::interpret_color_mode(glm::vec4& color, const float v1, const flo
         color.g = map(v2, 0.0, color_mode_state.range.g, 0.0, 1.0);
         color.b = map(v3, 0.0, color_mode_state.range.b, 0.0, 1.0);
         color.a = map(alpha, 0.0, color_mode_state.range.a, 0.0, 1.0);
-        console_in_function("RGBA(", color.r, ", ", color.g, ", ", color.b, ", ", color.a, ")");
         return;
     }
     if (color_mode_state.mode == HSB) {

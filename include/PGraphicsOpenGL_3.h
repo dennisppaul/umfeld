@@ -91,6 +91,7 @@ namespace umfeld {
                 : start_index(start), num_vertices(count), texture_id(texID) {}
         };
 
+        static constexpr bool    CREATE_SRGB_FBO                        = false; // TODO sRGB is WIP
         static constexpr bool    RENDER_POINT_AS_CIRCLE                 = true;
         static constexpr bool    RENDER_PRIMITVES_AS_SHAPES             = true;
         static constexpr uint8_t NUM_FILL_VERTEX_ATTRIBUTES_XYZ_RGBA_UV = 9;
@@ -100,6 +101,7 @@ namespace umfeld {
         int32_t                  previously_bound_draw_FBO = 0;
         int32_t                  previous_viewport[4]{};
         int32_t                  previous_shader{0};
+
 
         /* --- lights --- */
 

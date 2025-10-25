@@ -373,6 +373,8 @@ void PGraphicsOpenGL_3::init(uint32_t* pixels, const int width, const int height
     framebuffer.height = height;
     framebuffer.msaa   = render_to_offscreen && msaa_samples > 0;
 
+    constexpr uint32_t internal_target_format = CREATE_SRGB_FBO ? GL_SRGB8_ALPHA8 : UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT;
+
     if (render_to_offscreen) {
         glGenFramebuffers(1, &framebuffer.id);
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.id);
@@ -384,6 +386,7 @@ void PGraphicsOpenGL_3::init(uint32_t* pixels, const int width, const int height
             framebuffer.msaa = false;
         }
 #endif
+
         if (framebuffer.msaa) {
             console("using multisample anti-aliasing (MSAA)");
 
@@ -399,7 +402,7 @@ void PGraphicsOpenGL_3::init(uint32_t* pixels, const int width, const int height
 #ifndef OPENGL_ES_3_0
             glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE,
                                     samples,
-                                    UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT,
+                                    internal_target_format,
                                     framebuffer.width,
                                     framebuffer.height,
                                     GL_TRUE);
@@ -426,7 +429,7 @@ void PGraphicsOpenGL_3::init(uint32_t* pixels, const int width, const int height
             glBindTexture(GL_TEXTURE_2D, framebuffer.texture_id); // NOTE no need to use `OGL_bind_texture()`
             glTexImage2D(GL_TEXTURE_2D,
                          0,
-                         UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT,
+                         internal_target_format,
                          framebuffer.width,
                          framebuffer.height,
                          0,
@@ -467,7 +470,7 @@ void PGraphicsOpenGL_3::init(uint32_t* pixels, const int width, const int height
         glGenTextures(1, &_buffer_texture_id);
         glBindTexture(GL_TEXTURE_2D, _buffer_texture_id); // NOTE no need to use `OGL_bind_texture()`
         glTexImage2D(GL_TEXTURE_2D, 0,
-                     UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT,
+                     internal_target_format,
                      width, height,
                      0,
                      UMFELD_DEFAULT_EXTERNAL_PIXEL_FORMAT,
@@ -517,6 +520,8 @@ void PGraphicsOpenGL_3::resize(const int new_width, const int new_height) {
     framebuffer.width  = new_width;
     framebuffer.height = new_height;
 
+    constexpr uint32_t internal_target_format = CREATE_SRGB_FBO ? GL_SRGB8_ALPHA8 : UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT;
+
     // Recreate color target(s)
     if (render_to_offscreen) {
         // Recreate framebuffer resources
@@ -545,7 +550,7 @@ void PGraphicsOpenGL_3::resize(const int new_width, const int new_height) {
             const int samples = std::min(antialiasing, maxSamples);
             glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE,
                                     samples,
-                                    UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT,
+                                    internal_target_format,
                                     framebuffer.width,
                                     framebuffer.height,
                                     GL_TRUE);
@@ -572,7 +577,7 @@ void PGraphicsOpenGL_3::resize(const int new_width, const int new_height) {
             glBindTexture(GL_TEXTURE_2D, framebuffer.texture_id);
             glTexImage2D(GL_TEXTURE_2D,
                          0,
-                         UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT,
+                         internal_target_format,
                          framebuffer.width,
                          framebuffer.height,
                          0,
@@ -618,7 +623,7 @@ void PGraphicsOpenGL_3::resize(const int new_width, const int new_height) {
         }
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glTexImage2D(GL_TEXTURE_2D, 0,
-                     UMFELD_DEFAULT_INTERNAL_PIXEL_FORMAT,
+                     internal_target_format,
                      new_width, new_height,
                      0,
                      UMFELD_DEFAULT_EXTERNAL_PIXEL_FORMAT,

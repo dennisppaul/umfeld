@@ -62,9 +62,9 @@ namespace umfeld {
 
     void PGraphicsOpenGL::set_default_graphics_state() {
         background_f(red(DEFAULT_BACKGROUND_COLOR),
-                   green(DEFAULT_BACKGROUND_COLOR),
-                   blue(DEFAULT_BACKGROUND_COLOR),
-                   alpha(DEFAULT_BACKGROUND_COLOR));
+                     green(DEFAULT_BACKGROUND_COLOR),
+                     blue(DEFAULT_BACKGROUND_COLOR),
+                     alpha(DEFAULT_BACKGROUND_COLOR));
         blendMode(BLEND);
     }
 

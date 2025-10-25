@@ -150,14 +150,20 @@ namespace umfeld {
         // ### Setting
 
         void background(float gray);
+        void background(const int gray) { background(static_cast<float>(gray)); }
+        void background(const double gray) { background(static_cast<float>(gray)); }
         void background(float gray, float alpha);
         void background(float v1, float v2, float v3);
         void background(float v1, float v2, float v3, float alpha);
         void fill(float gray);
+        void fill(const int gray) { fill(static_cast<float>(gray)); }
+        void fill(const double gray) { fill(static_cast<float>(gray)); }
         void fill(float gray, float alpha);
         void fill(float v1, float v2, float v3);
         void fill(float v1, float v2, float v3, float alpha);
         void stroke(float gray);
+        void stroke(const int gray) { stroke(static_cast<float>(gray)); }
+        void stroke(const double gray) { stroke(static_cast<float>(gray)); }
         void stroke(float gray, float alpha);
         void stroke(float v1, float v2, float v3);
         void stroke(float v1, float v2, float v3, float alpha);

@@ -22,6 +22,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/type_aligned.hpp>
 
+#include <ostream>
+
 namespace umfeld {
     struct Vertex {
         static constexpr int  ATTRIBUTE_LOCATION_POSITION     = 0;
@@ -104,6 +106,18 @@ namespace umfeld {
                 userdata     = other.userdata;
             }
             return *this;
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, const Vertex& v) {
+            os << "Vertex { "
+               << "\tposition (" << v.position.x << ", " << v.position.y << ", " << v.position.z << ")" << std::endl
+               // << "normal: " << v.normal << ", "
+               << "\tcolor " << v.color.r << ", " << v.color.g << ", " << v.color.b << ", " << v.color.a << ")" << std::endl
+               // << "tex_coord: " << v.tex_coord << ", "
+               // << "transform_id: " << v.transform_id << ", "
+               // << "userdata: " << v.userdata
+               << " }";
+            return os;
         }
     };
     static_assert(sizeof(Vertex) == 64, "Vertex size should be exactly 64 bytes");
