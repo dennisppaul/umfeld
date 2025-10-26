@@ -612,7 +612,6 @@ namespace umfeld::subsystem {
 
     static PAudio* create_audio(const AudioUnitInfo* device_info) {
         update_audio_devices();
-        console("update_audio_devices");
         int i = 0;
         console("    INPUT DEVICES");
         for (auto ad: _audio_input_devices) {

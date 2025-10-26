@@ -130,21 +130,21 @@ namespace umfeld {
 
         // ### Creating & Reading
 
-        float   alpha(color_t color) const;
-        float   blue(color_t color) const;
-        float   brightness(color_t color) const;
-        color_t color(float gray);
-        color_t color(float gray, float alpha);
-        color_t color(float v1, float v2, float v3);
-        color_t color(float v1, float v2, float v3, float alpha);
-        color_t color_f(float brightness, float alpha = 1.0f);
-        color_t color_f(float r, float g, float b);
-        color_t color_f(float r, float g, float b, float a);
-        float   green(color_t color) const;
-        float   hue(color_t color) const;
-        color_t lerpColor(color_t c1, color_t c2, float amt) const;
-        float   red(color_t color) const;
-        float   saturation(color_t color) const;
+        float          alpha(color_t color) const;
+        float          blue(color_t color) const;
+        float          brightness(color_t color) const;
+        color_t        color(float gray) const;
+        color_t        color(float gray, float alpha) const;
+        color_t        color(float v1, float v2, float v3) const;
+        color_t        color(float v1, float v2, float v3, float alpha) const;
+        static color_t color_f(float brightness, float alpha = 1.0f);
+        static color_t color_f(float r, float g, float b);
+        static color_t color_f(float r, float g, float b, float a);
+        float          green(color_t color) const;
+        float          hue(color_t color) const;
+        static color_t lerpColor(color_t c1, color_t c2, float amt);
+        float          red(color_t color) const;
+        float          saturation(color_t color) const;
 
         // ### Setting
 

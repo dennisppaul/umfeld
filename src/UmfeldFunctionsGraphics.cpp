@@ -30,74 +30,84 @@ namespace umfeld {
 
     // ### Creating & Reading
 
-    float alpha(const color_t color) {
-        if (g == nullptr) { return 0; }
-        return g->alpha(color);
-    }
-
-    float blue(const color_t color) {
-        if (g == nullptr) { return 0; }
-        return g->blue(color);
-    }
-
-    float brightness(const color_t color) {
-        if (g == nullptr) { return 0; }
-        return g->brightness(color);
+    static float emit_graphics_not_initialized_warning_once() {
+        static bool emitted_warning = false;
+        if (!emitted_warning) {
+            warning("graphics functions called before graphics system was initialized.");
+            emitted_warning = true;
+        }
+        return 0;
     }
 
     color_t color(const float gray) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return color_pack_f(gray, gray, gray, 1.0f); }
         return g->color(gray);
     }
 
     color_t color(const float gray, const float alpha) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return color_pack_f(gray, gray, gray, alpha); }
         return g->color(gray, alpha);
     }
 
     color_t color(const float v1, const float v2, const float v3) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return color_pack_f(v1, v2, v3, 1.0f); }
         return g->color(v1, v2, v3);
     }
 
     color_t color(const float v1, const float v2, const float v3, const float alpha) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return color_pack_f(v1, v2, v3, alpha); }
         return g->color(v1, v2, v3, alpha);
     }
 
     color_t color_f(const float r, const float g, const float b, const float a) {
-        if (umfeld::g == nullptr) { return 0; }
+        if (umfeld::g == nullptr) { return color_pack_f(r, g, b, a); }
         return umfeld::g->color_f(r, g, b, a);
     }
 
     color_t color_f(const float brightness, const float alpha) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return color_pack_f(brightness, brightness, brightness, alpha); }
         return g->color_f(brightness, alpha);
     }
 
-    float green(const color_t color) {
-        if (g == nullptr) { return 0; }
-        return g->green(color);
-    }
-
-    float hue(const color_t color) {
-        if (g == nullptr) { return 0; }
-        return g->hue(color);
-    }
-
     color_t lerpColor(const color_t c1, const color_t c2, const float amt) {
-        if (g == nullptr) { return 0; }
-        return g->lerpColor(c1, c2, amt);
+        return PGraphics::lerpColor(c1, c2, amt);
     }
+
+    // TODO add better default behavior when graphics not initialized
 
     float red(const color_t color) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
         return g->red(color);
     }
 
+    float green(const color_t color) {
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
+        return g->green(color);
+    }
+
+    float blue(const color_t color) {
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
+        return g->blue(color);
+    }
+
+    float alpha(const color_t color) {
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
+        return g->alpha(color);
+    }
+
+    float hue(const color_t color) {
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
+        return g->hue(color);
+    }
+
     float saturation(const color_t color) {
-        if (g == nullptr) { return 0; }
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
         return g->saturation(color);
+    }
+
+    float brightness(const color_t color) {
+        if (g == nullptr) { return emit_graphics_not_initialized_warning_once(); }
+        return g->brightness(color);
     }
 
     // ### Setting

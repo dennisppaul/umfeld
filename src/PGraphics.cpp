@@ -187,19 +187,19 @@ float PGraphics::brightness(const uint32_t color) const {
     return v;
 }
 
-color_t PGraphics::color(const float gray) {
+color_t PGraphics::color(const float gray) const {
     return color(gray, gray, gray, color_mode_state.range.a);
 }
 
-color_t PGraphics::color(const float gray, const float alpha) {
+color_t PGraphics::color(const float gray, const float alpha) const {
     return color(gray, gray, gray, alpha);
 }
 
-color_t PGraphics::color(const float v1, const float v2, const float v3) {
+color_t PGraphics::color(const float v1, const float v2, const float v3) const {
     return color(v1, v2, v3, color_mode_state.range.a);
 }
 
-color_t PGraphics::color(const float v1, const float v2, const float v3, const float alpha) {
+color_t PGraphics::color(const float v1, const float v2, const float v3, const float alpha) const {
     glm::vec4 _color;
     interpret_color_mode(_color, v1, v2, v3, alpha);
     return color_f(_color.r, _color.g, _color.b, _color.a);
@@ -214,14 +214,10 @@ color_t PGraphics::color_f(const float r, const float g, const float b) {
 }
 
 color_t PGraphics::color_f(const float r, const float g, const float b, const float a) {
-    return RGBAf(r, g, b, a);
-    // return (static_cast<uint32_t>(a * 255) << 24) |
-    //        (static_cast<uint32_t>(b * 255) << 16) |
-    //        (static_cast<uint32_t>(g * 255) << 8) |
-    //        static_cast<uint32_t>(r * 255);
+    return color_pack_f(r, g, b, a);
 }
 
-color_t PGraphics::lerpColor(const color_t c1, const color_t c2, float amt) const {
+color_t PGraphics::lerpColor(const color_t c1, const color_t c2, float amt) {
     amt = std::clamp(amt, 0.0f, 1.0f);
     glm::vec4 cn1;
     color_unpack_f(c1, cn1.r, cn1.g, cn1.b, cn1.a);

@@ -316,11 +316,7 @@ static void handle_event_in_update_loop() {
 static void handle_draw_in_setup();
 
 void handle_setup_draw_and_post() {
-    if (umfeld::enable_graphics) {
-        if (umfeld::subsystem_graphics != nullptr) {
-            handle_draw_in_setup();
-        }
-    }
+    handle_draw_in_setup();
 
     /* - setup_post */
 
@@ -697,6 +693,7 @@ static void handle_draw_in_setup() {
     if (umfeld::g != nullptr) {
         umfeld::g->set_default_graphics_state();
     }
+
     umfeld::run_setup_callback();
 
     for (const umfeld::Subsystem* subsystem: umfeld::subsystems) {
@@ -706,12 +703,6 @@ static void handle_draw_in_setup() {
             }
         }
     }
-
-    // if (umfeld::subsystem_graphics != nullptr) {
-    //     if (umfeld::subsystem_graphics->post != nullptr) {
-    //         umfeld::subsystem_graphics->post();
-    //     }
-    // }
 
     umfeld::run_post_callback();
 }
@@ -736,12 +727,6 @@ static void handle_draw() {
             }
         }
     }
-
-    // if (umfeld::subsystem_graphics != nullptr) {
-    //     if (umfeld::subsystem_graphics->post != nullptr) {
-    //         umfeld::subsystem_graphics->post();
-    //     }
-    // }
 
     umfeld::run_post_callback();
 }

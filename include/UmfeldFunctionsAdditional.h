@@ -43,14 +43,14 @@ namespace umfeld {
 
     // TODO clean up function order
     // Color
-    void     rgb_to_hsb_f(float r, float g, float b, float& h, float& s, float& v);
-    void     hsb_to_rgb_f(float h, float s, float v, float& r, float& g, float& b);
-    uint32_t color_pack_f(float r, float g, float b, float a);
-    void     color_unpack_f(color_t color, float& r, float& g, float& b, float& a);
-    float    red_f(const color_t color);
-    float    green_f(const color_t color);
-    float    blue_f(const color_t color);
-    float    alpha_f(const color_t color);
+    void    rgb_to_hsb_f(float r, float g, float b, float& h, float& s, float& v);
+    void    hsb_to_rgb_f(float h, float s, float v, float& r, float& g, float& b);
+    color_t color_pack_f(float r, float g, float b, float a);
+    void    color_unpack_f(color_t color, float& r, float& g, float& b, float& a);
+    float   red_f(color_t color);
+    float   green_f(color_t color);
+    float   blue_f(color_t color);
+    float   alpha_f(color_t color);
     // String
     inline bool              equals(const std::string_view a, const std::string_view b) { return a == b; }
     bool                     begins_with(const std::string& str, const std::string& prefix);
@@ -202,9 +202,9 @@ namespace umfeld {
 #endif
     }
 
-#define error_in_function(...)   error("'", __func__, "' :: ", __VA_ARGS__)
-#define warning_in_function(...) warning("'", __func__, "' :: ", __VA_ARGS__)
-#define console_in_function(...) console("'", __func__, "' :: ", __VA_ARGS__)
+#define error_in_function(...)   umfeld::error("'", __func__, "' :: ", __VA_ARGS__)
+#define warning_in_function(...) umfeld::warning("'", __func__, "' :: ", __VA_ARGS__)
+#define console_in_function(...) umfeld::console("'", __func__, "' :: ", __VA_ARGS__)
 #define _console_once(counter, ...)               \
     do {                                          \
         static bool _once_flag_##counter = false; \
