@@ -211,6 +211,7 @@ namespace umfeld {
     void texture_filter(TextureFilter filter);
     void texture_wrap(TextureWrap wrap);
     void flush();
+    void draw_umfeld(int x, int y, int pixel_size);
 
     template<typename T>
     typename std::enable_if<std::is_arithmetic<T>::value || std::is_same<T, char>::value, void>::type

@@ -820,7 +820,41 @@ namespace umfeld {
                 }
             }
         }
-
         g->upload_colorbuffer(g->pixels);
+    }
+
+
+    static void draw_glyph(const int ox, const int oy, const int pixel_size, const uint8_t rows[7]) {
+        for (int r = 0; r < 7; r++) {
+            const uint8_t m = rows[r];
+            for (int c = 0; c < 5; c++) {
+                if (m & (1 << (4 - c))) {
+                    rect(ox + c * pixel_size, oy + r * pixel_size, pixel_size, pixel_size);
+                }
+            }
+        }
+    }
+
+    // 5×7 glyphs (LSB-left masked across 5 bits)
+    const uint8_t GLYPH_U[7] = {0b10001, 0b10001, 0b10001, 0b10001, 0b10001, 0b10001, 0b01110};
+    const uint8_t GLYPH_M[7] = {0b10001, 0b11011, 0b10101, 0b10001, 0b10001, 0b10001, 0b10001};
+    const uint8_t GLYPH_F[7] = {0b11111, 0b10000, 0b10000, 0b11110, 0b10000, 0b10000, 0b10000};
+    const uint8_t GLYPH_E[7] = {0b11111, 0b10000, 0b10000, 0b11110, 0b10000, 0b10000, 0b11111};
+    const uint8_t GLYPH_L[7] = {0b10000, 0b10000, 0b10000, 0b10000, 0b10000, 0b10000, 0b11111};
+    const uint8_t GLYPH_D[7] = {0b11110, 0b10001, 0b10001, 0b10001, 0b10001, 0b10001, 0b11110};
+
+    void draw_umfeld(int x, const int y, const int pixel_size) {
+        const int w = 5 * pixel_size, sp = 1 * pixel_size;
+        draw_glyph(x, y, pixel_size, GLYPH_U);
+        x += w + sp;
+        draw_glyph(x, y, pixel_size, GLYPH_M);
+        x += w + sp;
+        draw_glyph(x, y, pixel_size, GLYPH_F);
+        x += w + sp;
+        draw_glyph(x, y, pixel_size, GLYPH_E);
+        x += w + sp;
+        draw_glyph(x, y, pixel_size, GLYPH_L);
+        x += w + sp;
+        draw_glyph(x, y, pixel_size, GLYPH_D);
     }
 } // namespace umfeld
