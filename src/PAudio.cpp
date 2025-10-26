@@ -61,18 +61,3 @@ void PAudio::copy_input_buffer_to_output_buffer() const {
         }
     }
 }
-
-void PAudio::acquire_audio_buffer_per_sample(const PAudio* audio_device) {
-    constexpr int num_output_channels = 2;
-    if (audio_device->output_channels == num_output_channels) {
-        for (int i = 0; i < audio_device->buffer_size * num_output_channels; i += num_output_channels) {
-            float left  = 0.0f;
-            float right = 0.0f;
-            run_audioEventFloatRefFloatRef_callback(left, right);
-            audio_device->output_buffer[i + 0] = left;
-            audio_device->output_buffer[i + 1] = right;
-        }
-    } else {
-        warning_in_function("currently only stereo output (2 channels) is supported");
-    }
-}

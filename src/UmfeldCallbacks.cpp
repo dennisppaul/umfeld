@@ -24,46 +24,48 @@
 
 namespace umfeld {
     namespace {
-        void                callback_settings_default() {}
-        FnVoid*             callback_settings_fn = callback_settings_default;
-        void                callback_arguments_default(const std::vector<std::string>&) {}
-        FnStrings*          callback_arguments_fn = callback_arguments_default;
-        void                callback_setup_default() {}
-        FnVoid*             callback_setup_fn = callback_setup_default;
-        void                callback_draw_default() {}
-        FnVoid*             callback_draw_fn = callback_draw_default;
-        void                callback_update_default() {}
-        FnVoid*             callback_update_fn = callback_update_default;
-        void                callback_windowResized_default(int, int) {}
-        FnIntInt*           callback_windowResized_fn = callback_windowResized_default;
-        void                callback_post_default() {}
-        FnVoid*             callback_post_fn = callback_post_default;
-        void                callback_shutdown_default() {}
-        FnVoid*             callback_shutdown_fn = callback_shutdown_default;
-        void                callback_audioEvent_default() {}
-        FnVoid*             callback_audioEvent_fn = callback_audioEvent_default;
-        void                callback_audioEventPAudio_default(const PAudio&) {}
-        FnPAudio*           callback_audioEventPAudio_fn = callback_audioEventPAudio_default;
-        void                callback_audioEventFloatRefFloatRef_default(float&, float&) {}
-        FnFloatRefFloatRef* callback_audioEventFloatRefFloatRef_fn = callback_audioEventFloatRefFloatRef_default;
-        void                callback_keyPressed_default() {}
-        FnVoid*             callback_keyPressed_fn = callback_keyPressed_default;
-        void                callback_keyReleased_default() {}
-        FnVoid*             callback_keyReleased_fn = callback_keyReleased_default;
-        void                callback_mousePressed_default() {}
-        FnVoid*             callback_mousePressed_fn = callback_mousePressed_default;
-        void                callback_mouseReleased_default() {}
-        FnVoid*             callback_mouseReleased_fn = callback_mouseReleased_default;
-        void                callback_mouseDragged_default() {}
-        FnVoid*             callback_mouseDragged_fn = callback_mouseDragged_default;
-        void                callback_mouseMoved_default() {}
-        FnVoid*             callback_mouseMoved_fn = callback_mouseMoved_default;
-        void                callback_mouseWheel_default(float, float) {}
-        FnFloatFloat*       callback_mouseWheel_fn = callback_mouseWheel_default;
-        void                callback_dropped_default(const char*) {}
-        FnConstCharPtr*     callback_dropped_fn = callback_dropped_default;
-        bool                callback_sdl_event_default(const SDL_Event&) { return false; }
-        FnSDLEvent*         callback_sdl_event_fn = callback_sdl_event_default;
+        void            callback_settings_default() {}
+        FnVoid*         callback_settings_fn = callback_settings_default;
+        void            callback_arguments_default(const std::vector<std::string>&) {}
+        FnStrings*      callback_arguments_fn = callback_arguments_default;
+        void            callback_setup_default() {}
+        FnVoid*         callback_setup_fn = callback_setup_default;
+        void            callback_draw_default() {}
+        FnVoid*         callback_draw_fn = callback_draw_default;
+        void            callback_update_default() {}
+        FnVoid*         callback_update_fn = callback_update_default;
+        void            callback_windowResized_default(int, int) {}
+        FnIntInt*       callback_windowResized_fn = callback_windowResized_default;
+        void            callback_post_default() {}
+        FnVoid*         callback_post_fn = callback_post_default;
+        void            callback_shutdown_default() {}
+        FnVoid*         callback_shutdown_fn = callback_shutdown_default;
+        // void            callback_audioEvent_default() {}
+        // FnVoid*         callback_audioEvent_fn = callback_audioEvent_default;
+        void            callback_audioEventPAudio_default(const PAudio&) {}
+        FnPAudio*       callback_audioEventPAudio_fn = callback_audioEventPAudio_default;
+        void            callback_audioEventFloatRef_2_default(float&, float&) {}
+        FnFloatRef_2*   callback_audioEventFloatRef_2_fn = callback_audioEventFloatRef_2_default;
+        void            callback_audioEventFloatRef_4_default(const float&, const float&, float&, float&) {}
+        FnFloatRef_4*   callback_audioEventFloatRef_4_fn = callback_audioEventFloatRef_4_default;
+        void            callback_keyPressed_default() {}
+        FnVoid*         callback_keyPressed_fn = callback_keyPressed_default;
+        void            callback_keyReleased_default() {}
+        FnVoid*         callback_keyReleased_fn = callback_keyReleased_default;
+        void            callback_mousePressed_default() {}
+        FnVoid*         callback_mousePressed_fn = callback_mousePressed_default;
+        void            callback_mouseReleased_default() {}
+        FnVoid*         callback_mouseReleased_fn = callback_mouseReleased_default;
+        void            callback_mouseDragged_default() {}
+        FnVoid*         callback_mouseDragged_fn = callback_mouseDragged_default;
+        void            callback_mouseMoved_default() {}
+        FnVoid*         callback_mouseMoved_fn = callback_mouseMoved_default;
+        void            callback_mouseWheel_default(float, float) {}
+        FnFloatFloat*   callback_mouseWheel_fn = callback_mouseWheel_default;
+        void            callback_dropped_default(const char*) {}
+        FnConstCharPtr* callback_dropped_fn = callback_dropped_default;
+        bool            callback_sdl_event_default(const SDL_Event&) { return false; }
+        FnSDLEvent*     callback_sdl_event_fn = callback_sdl_event_default;
     } // namespace
 } // namespace umfeld
 
@@ -83,12 +85,16 @@ void umfeld::set_post_callback(FnVoid* f) { callback_post_fn = f ? f : callback_
 void umfeld::run_post_callback() { callback_post_fn(); }
 void umfeld::set_shutdown_callback(FnVoid* f) { callback_shutdown_fn = f ? f : callback_shutdown_default; }
 void umfeld::run_shutdown_callback() { callback_shutdown_fn(); }
-void umfeld::set_audioEvent_callback(FnVoid* f) { callback_audioEvent_fn = f ? f : callback_audioEvent_default; }
-void umfeld::run_audioEvent_callback() { callback_audioEvent_fn(); }
+// void umfeld::set_audioEvent_callback(FnVoid* f) { callback_audioEvent_fn = f ? f : callback_audioEvent_default; }
+// void umfeld::run_audioEvent_callback() { callback_audioEvent_fn(); }
 void umfeld::set_audioEventPAudio_callback(FnPAudio* f) { callback_audioEventPAudio_fn = f ? f : callback_audioEventPAudio_default; }
 void umfeld::run_audioEventPAudio_callback(const PAudio& device) { callback_audioEventPAudio_fn(device); }
-void umfeld::set_audioEventFloatRefFloatRef_callback(FnFloatRefFloatRef* f) { callback_audioEventFloatRefFloatRef_fn = f ? f : callback_audioEventFloatRefFloatRef_fn; }
-void umfeld::run_audioEventFloatRefFloatRef_callback(float& left, float& right) { callback_audioEventFloatRefFloatRef_fn(left, right); }
+
+void umfeld::set_audioEventFloatRef_2_callback(FnFloatRef_2* f) { callback_audioEventFloatRef_2_fn = f ? f : callback_audioEventFloatRef_2_fn; }
+void umfeld::run_audioEventFloatRef_2_callback(float& left, float& right) { callback_audioEventFloatRef_2_fn(left, right); }
+void umfeld::set_audioEventFloatRef_4_callback(FnFloatRef_4* f) { callback_audioEventFloatRef_4_fn = f ? f : callback_audioEventFloatRef_4_fn; }
+void umfeld::run_audioEventFloatRef_4_callback(const float& input_left, const float& input_right, float& output_left, float& output_right) { callback_audioEventFloatRef_4_fn(input_left, input_right, output_left, output_right); }
+
 void umfeld::set_keyPressed_callback(FnVoid* f) { callback_keyPressed_fn = f ? f : callback_keyPressed_default; }
 void umfeld::run_keyPressed_callback() { callback_keyPressed_fn(); }
 void umfeld::set_keyReleased_callback(FnVoid* f) { callback_keyReleased_fn = f ? f : callback_keyReleased_default; }

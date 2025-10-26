@@ -38,8 +38,8 @@ void draw();
 void update();
 void windowResized(int width, int height);
 void post();
-[[deprecated("use 'audioEvent(PAudio& audio)' instead")]]
-void audioEvent();
+// [[deprecated("use 'audioEvent(PAudio& audio)' instead")]]
+// void audioEvent();
 /* NOTE weak implementations in `SubsystemHIDEvents`*/
 void keyPressed();
 void keyReleased();
@@ -61,14 +61,15 @@ void audioEvent(float& left, float& right);   // NOTE cannot be `extern "C"` due
 
 /* declare callbacks */
 namespace umfeld {
-    using FnVoid             = void();
-    using FnIntInt           = void(int, int);
-    using FnFloatFloat       = void(float, float);
-    using FnStrings          = void(const std::vector<std::string>&);
-    using FnPAudio           = void(const PAudio&);
-    using FnFloatRefFloatRef = void(float&, float&);
-    using FnConstCharPtr     = void(const char*);
-    using FnSDLEvent         = bool(const SDL_Event& event);
+    using FnVoid         = void();
+    using FnIntInt       = void(int, int);
+    using FnFloatFloat   = void(float, float);
+    using FnStrings      = void(const std::vector<std::string>&);
+    using FnPAudio       = void(const PAudio&);
+    using FnFloatRef_2   = void(float&, float&);
+    using FnFloatRef_4   = void(const float&, const float&, float&, float&);
+    using FnConstCharPtr = void(const char*);
+    using FnSDLEvent     = bool(const SDL_Event& event);
     void set_settings_callback(FnVoid* f);
     void run_settings_callback();
     void set_arguments_callback(FnStrings* f);
@@ -85,12 +86,12 @@ namespace umfeld {
     void run_post_callback();
     void set_shutdown_callback(FnVoid* f);
     void run_shutdown_callback();
-    void set_audioEvent_callback(FnVoid* f);
-    void run_audioEvent_callback();
     void set_audioEventPAudio_callback(FnPAudio* f);
     void run_audioEventPAudio_callback(const PAudio&);
-    void set_audioEventFloatRefFloatRef_callback(FnFloatRefFloatRef* f);
-    void run_audioEventFloatRefFloatRef_callback(float&, float&);
+    void set_audioEventFloatRef_2_callback(FnFloatRef_2* f);
+    void run_audioEventFloatRef_2_callback(float&, float&);
+    void set_audioEventFloatRef_4_callback(FnFloatRef_4* f);
+    void run_audioEventFloatRef_4_callback(const float&, const float&, float&, float&);
     void set_keyPressed_callback(FnVoid* f);
     void run_keyPressed_callback();
     void set_keyReleased_callback(FnVoid* f);

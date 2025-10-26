@@ -47,6 +47,7 @@ UMFELD_FUNC_WEAK void post() { LOG_CALLBACK_MSG("default post"); }
 UMFELD_FUNC_WEAK void shutdown() { LOG_CALLBACK_MSG(umfeld::to_string("default: ", __func__)); }
 UMFELD_FUNC_WEAK void audioEvent(const umfeld::PAudio& audio) { LOG_CALLBACK_MSG(umfeld::to_string("default: ", __func__)); }
 UMFELD_FUNC_WEAK void audioEvent(float& left, float& right) { LOG_CALLBACK_MSG(umfeld::to_string("default: ", __func__)); }
+UMFELD_FUNC_WEAK void audioEvent(const float& input_left, const float& input_right, float& output_left, float& output_right) { LOG_CALLBACK_MSG(umfeld::to_string("default: ", __func__)); }
 [[deprecated("use 'audioEvent(PAudio& audio)' instead")]]
 UMFELD_FUNC_WEAK void audioEvent() { LOG_CALLBACK_MSG(umfeld::to_string("default: ", __func__)); }
 UMFELD_FUNC_WEAK void keyPressed() { LOG_CALLBACK_MSG(umfeld::to_string("default: ", __func__)); }
@@ -359,12 +360,8 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
     umfeld::set_post_callback(post);
     umfeld::set_shutdown_callback(shutdown);
     umfeld::set_audioEventPAudio_callback(audioEvent);
-    umfeld::set_audioEventFloatRefFloatRef_callback(audioEvent);
-    DISABLE_WARNING_PUSH
-    DISABLE_WARNING_DEPRECATED
-    // ReSharper disable once CppDeprecatedEntity
-    umfeld::set_audioEvent_callback(audioEvent);
-    DISABLE_WARNING_POP
+    umfeld::set_audioEventFloatRef_2_callback(audioEvent);
+    umfeld::set_audioEventFloatRef_4_callback(audioEvent);
     umfeld::set_keyPressed_callback(keyPressed);
     umfeld::set_keyReleased_callback(keyReleased);
     umfeld::set_mousePressed_callback(mousePressed);
@@ -580,26 +577,7 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
     if (umfeld::enable_audio) {
         if (umfeld::subsystem_audio != nullptr) {
             if (umfeld::subsystem_audio->create_audio != nullptr) {
-                // NOTE fill in the values from `Umfeld.h`
-                umfeld::AudioUnitInfo _audio_unit_info;
-                // _audio_unit_info.unique_id       = 0; // NOTE set by subsystem
-                DISABLE_WARNING_PUSH
-                DISABLE_WARNING_DEPRECATED
-                // ReSharper disable CppDeprecatedEntity
-                _audio_unit_info.input_device_id    = umfeld::audio_input_device_id;
-                _audio_unit_info.input_device_name  = umfeld::audio_input_device_name;
-                _audio_unit_info.input_buffer       = nullptr;
-                _audio_unit_info.input_channels     = umfeld::audio_input_channels;
-                _audio_unit_info.output_device_id   = umfeld::audio_output_device_id;
-                _audio_unit_info.output_device_name = umfeld::audio_output_device_name;
-                _audio_unit_info.output_buffer      = nullptr;
-                _audio_unit_info.output_channels    = umfeld::audio_output_channels;
-                _audio_unit_info.buffer_size        = umfeld::audio_buffer_size;
-                _audio_unit_info.sample_rate        = umfeld::audio_sample_rate;
-                // ReSharper restore CppDeprecatedEntity
-                DISABLE_WARNING_POP
-                _audio_unit_info.threaded = umfeld::run_audio_in_thread;
-                umfeld::audio_device      = umfeld::subsystem_audio->create_audio(&_audio_unit_info);
+                umfeld::audio_device = umfeld::subsystem_audio->create_audio(&umfeld::audio_unit_info);
             }
         }
     }
@@ -627,15 +605,12 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
             // NOTE create two pixel buffers if display density is greater than 1 ( e.g retina display )
             //      g->pixels -> physical size ( w * d * h * d )
             //      pixels    -> logical size ( w * h )
-            //umfeld::g->pixels = new uint32_t[umfeld::g->width * umfeld::g->displayDensity() * umfeld::g->height * umfeld::g->displayDensity()];
-            //umfeld::pixels    = new uint32_t[umfeld::g->width * umfeld::g->height];
             const auto count_d = static_cast<size_t>(umfeld::g->width * static_cast<float>(umfeld::g->displayDensity()) * umfeld::g->height * static_cast<float>(umfeld::g->displayDensity()));
             const auto count   = static_cast<size_t>(umfeld::g->width * umfeld::g->height);
             umfeld::g->pixels  = new uint32_t[count_d];
             umfeld::pixels     = new uint32_t[count];
         } else {
             // NOTE create single pixel buffer and share it
-            //umfeld::pixels    = new uint32_t[umfeld::g->width * umfeld::g->height];
             const auto count  = static_cast<size_t>(umfeld::g->width * umfeld::g->height);
             umfeld::g->pixels = new uint32_t[count];
             umfeld::pixels    = umfeld::g->pixels;
@@ -643,27 +618,7 @@ SDL_AppResult SDL_AppInit(void** appstate, const int argc, char* argv[]) {
         // NOTE umfeld now owns the pixel buffer and takes care of deleting it
     }
 
-    if (umfeld::audio_device != nullptr && umfeld::enable_audio) {
-        // NOTE copy values back to global variables after initialization … a bit hackish but well.
-        DISABLE_WARNING_PUSH
-        DISABLE_WARNING_DEPRECATED
-        // ReSharper disable CppDeprecatedEntity
-        umfeld::audio_input_device_id    = umfeld::audio_device->input_device_id;
-        umfeld::audio_input_device_name  = umfeld::audio_device->input_device_name;
-        umfeld::audio_input_buffer       = umfeld::audio_device->input_buffer;
-        umfeld::audio_input_channels     = umfeld::audio_device->input_channels;
-        umfeld::audio_output_device_id   = umfeld::audio_device->output_device_id;
-        umfeld::audio_output_device_name = umfeld::audio_device->output_device_name;
-        umfeld::audio_output_buffer      = umfeld::audio_device->output_buffer;
-        umfeld::audio_output_channels    = umfeld::audio_device->output_channels;
-        umfeld::audio_buffer_size        = umfeld::audio_device->buffer_size;
-        umfeld::audio_sample_rate        = umfeld::audio_device->sample_rate;
-        umfeld::run_audio_in_thread      = umfeld::audio_device->threaded;
-        // ReSharper restore CppDeprecatedEntity
-        DISABLE_WARNING_POP
-    }
-
-    // NOTE call to setup and setup_post is handled in first call to `SDL_AppIterate`
+    // NOTE call to setup and setup_post is now handled in first call to `SDL_AppIterate`
     // handle_setup_draw_and_post();
 
     return SDL_APP_CONTINUE;

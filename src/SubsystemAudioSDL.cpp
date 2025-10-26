@@ -22,6 +22,7 @@
 
 #include "Umfeld.h"
 #include "Subsystems.h"
+#include "SubsystemAudio.h"
 #include "PAudio.h"
 
 
@@ -332,31 +333,7 @@ namespace umfeld::subsystem {
                 if (!SDL_AudioStreamDevicePaused(_stream)) {
                     const int request_num_sample_frames = _device->audio_device->buffer_size;
                     if (SDL_GetAudioStreamQueued(_stream) < request_num_sample_frames) {
-                        // NOTE acquire samples from main audio device
-                        // if (audio_device != nullptr) {
-                        //     if (_device->audio_device == audio_device) {
-                        //         switch (audio_sample_acquisition_mode) {
-                        //             case AUDIO_BLOCK:
-                        //                 break;
-                        //             case AUDIO_PER_SAMPLE_NO_INPUT:
-                        //                 break;
-                        //             case AUDIO_PER_SAMPLE_WITH_INPUT:
-                        //                 break;
-                        //         }
-                        //     }
-                        // }
-                        if (audio_device != nullptr) {
-                            if (_device->audio_device == audio_device) {
-                                run_audioEvent_callback();
-                                if (enable_audio_per_sample_processing) {
-                                    PAudio::acquire_audio_buffer_per_sample(audio_device);
-                                }
-                            }
-                        }
-
-                        // NOTE for all registered audio devices ( including main audio device )
-                        run_audioEventPAudio_callback(*_device->audio_device);
-
+                        acquire_audio_device_audio_buffer_samples(audio_device);
                         const int    num_processed_bytes = static_cast<int>(_num_sample_frames) * _device->audio_device->output_channels * sizeof(float);
                         const float* buffer              = _device->audio_device->output_buffer;
                         if (buffer != nullptr) {

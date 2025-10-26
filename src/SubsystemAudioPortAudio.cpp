@@ -28,6 +28,7 @@
 #include <chrono>
 #include <thread>
 
+#include "SubsystemAudio.h"
 #include "UmfeldFunctionsAdditional.h"
 #include "PAudio.h"
 
@@ -166,18 +167,10 @@ namespace umfeld::subsystem {
                 return;
             }
 
-            // Run callbacks only when enough frames for both sides (or side unused)
+            // NOTE run callbacks only when enough frames for both sides (or side unused)
             if ((availIn >= audio->buffer_size || audio->input_channels == 0) &&
                 (availOut >= audio->buffer_size || audio->output_channels == 0)) {
-                if (audio_device != nullptr) {
-                    if (audio == audio_device) {
-                        run_audioEvent_callback();
-                        if (enable_audio_per_sample_processing) {
-                            PAudio::acquire_audio_buffer_per_sample(audio);
-                        }
-                    }
-                }
-                run_audioEventPAudio_callback(*audio);
+                acquire_audio_device_audio_buffer_samples(audio);
             }
 
             if (audio->output_channels > 0 && availOut >= audio->buffer_size) {
@@ -260,12 +253,7 @@ namespace umfeld::subsystem {
                 memcpy(audio->input_buffer, inputBuffer, framesPerBuffer * audio->input_channels * sizeof(float));
             }
 
-            if (audio_device != nullptr) {
-                if (audio == audio_device) {
-                    run_audioEvent_callback();
-                }
-            }
-            run_audioEventPAudio_callback(*audio);
+            acquire_audio_device_audio_buffer_samples(audio);
 
             if (audio->output_channels > 0 && outputBuffer != nullptr) {
                 memcpy(outputBuffer, audio->output_buffer, framesPerBuffer * audio->output_channels * sizeof(float));

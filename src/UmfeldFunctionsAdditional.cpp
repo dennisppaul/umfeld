@@ -333,19 +333,14 @@ namespace umfeld {
             warning("`audio()` must be called before or within `settings()`.");
             return;
         }
-        DISABLE_WARNING_PUSH
-        DISABLE_WARNING_DEPRECATED
-        // ReSharper disable CppDeprecatedEntity
-        umfeld::enable_audio           = true;
-        umfeld::audio_input_device_id  = input_device_id;
-        umfeld::audio_input_channels   = input_channels;
-        umfeld::audio_output_device_id = output_device_id;
-        umfeld::audio_output_channels  = output_channels;
-        umfeld::audio_buffer_size      = buffer_size;
-        umfeld::audio_sample_rate      = sample_rate;
-        umfeld::run_audio_in_thread    = threaded;
-        // ReSharper restore CppDeprecatedEntity
-        DISABLE_WARNING_POP
+        enable_audio                     = true;
+        audio_unit_info.input_device_id  = input_device_id;
+        audio_unit_info.input_channels   = input_channels;
+        audio_unit_info.output_device_id = output_device_id;
+        audio_unit_info.output_channels  = output_channels;
+        audio_unit_info.buffer_size      = buffer_size;
+        audio_unit_info.sample_rate      = sample_rate;
+        audio_unit_info.threaded         = threaded;
     }
 
     void audio(const int          input_channels,
@@ -359,21 +354,16 @@ namespace umfeld {
             warning("`audio()` must be called before or within `settings()`.");
             return;
         }
-        DISABLE_WARNING_PUSH
-        DISABLE_WARNING_DEPRECATED
-        // ReSharper disable CppDeprecatedEntity
-        umfeld::enable_audio             = true;
-        umfeld::audio_input_device_id    = AUDIO_DEVICE_FIND_BY_NAME;
-        umfeld::audio_input_device_name  = input_device_name;
-        umfeld::audio_input_channels     = input_channels;
-        umfeld::audio_output_device_id   = AUDIO_DEVICE_FIND_BY_NAME;
-        umfeld::audio_output_device_name = output_device_name;
-        umfeld::audio_output_channels    = output_channels;
-        umfeld::audio_buffer_size        = buffer_size;
-        umfeld::audio_sample_rate        = sample_rate;
-        umfeld::run_audio_in_thread      = threaded;
-        // ReSharper restore CppDeprecatedEntity
-        DISABLE_WARNING_POP
+        enable_audio                       = true;
+        audio_unit_info.input_device_id    = AUDIO_DEVICE_FIND_BY_NAME;
+        audio_unit_info.input_device_name  = input_device_name;
+        audio_unit_info.input_channels     = input_channels;
+        audio_unit_info.output_device_id   = AUDIO_DEVICE_FIND_BY_NAME;
+        audio_unit_info.output_device_name = output_device_name;
+        audio_unit_info.output_channels    = output_channels;
+        audio_unit_info.buffer_size        = buffer_size;
+        audio_unit_info.sample_rate        = sample_rate;
+        audio_unit_info.threaded           = threaded;
     }
 
     void audio(const AudioUnitInfo& info) {
@@ -381,22 +371,7 @@ namespace umfeld {
             warning("`audio()` must be called before or within `settings()`.");
             return;
         }
-        DISABLE_WARNING_PUSH
-        DISABLE_WARNING_DEPRECATED
-        // ReSharper disable CppDeprecatedEntity
-        umfeld::enable_audio             = true;
-        umfeld::audio_input_device_id    = info.input_device_id;
-        umfeld::audio_input_device_id    = info.input_device_id;
-        umfeld::audio_input_device_name  = info.input_device_name;
-        umfeld::audio_input_channels     = info.input_channels;
-        umfeld::audio_output_device_id   = info.output_device_id;
-        umfeld::audio_output_device_name = info.output_device_name;
-        umfeld::audio_output_channels    = info.output_channels;
-        umfeld::audio_buffer_size        = info.buffer_size;
-        umfeld::audio_sample_rate        = info.sample_rate;
-        umfeld::run_audio_in_thread      = info.threaded;
-        // ReSharper restore CppDeprecatedEntity
-        DISABLE_WARNING_POP
+        audio_unit_info = info;
     }
 
     void audio_start(PAudio* device) {
@@ -437,7 +412,7 @@ namespace umfeld {
         config.triangulate = true;
 
         if (!reader.ParseFromFile(filename, config)) {
-            std::cerr << "Failed to load OBJ: " << reader.Error() << std::endl;
+            error("Failed to load OBJ: ", reader.Error());
             return {};
         }
 
@@ -534,10 +509,9 @@ namespace umfeld {
                 const tinyobj::real_t vx = attrib.vertices[3 * index.vertex_index + 0];
                 const tinyobj::real_t vy = attrib.vertices[3 * index.vertex_index + 1];
                 const tinyobj::real_t vz = attrib.vertices[3 * index.vertex_index + 2];
-                // TODO add normals once Vertex is upgraded
-                // const tinyobj::real_t nx = attrib.normals[3 * index.normal_index + 0];
-                // const tinyobj::real_t ny = attrib.normals[3 * index.normal_index + 1];
-                // const tinyobj::real_t nz = attrib.normals[3 * index.normal_index + 2];
+                const tinyobj::real_t nx = attrib.normals[3 * index.normal_index + 0];
+                const tinyobj::real_t ny = attrib.normals[3 * index.normal_index + 1];
+                const tinyobj::real_t nz = attrib.normals[3 * index.normal_index + 2];
                 const tinyobj::real_t tx = attrib.texcoords[2 * index.texcoord_index + 0];
                 const tinyobj::real_t ty = attrib.texcoords[2 * index.texcoord_index + 1];
                 // Optional: vertex colors
@@ -547,7 +521,8 @@ namespace umfeld {
 
                 vertices.emplace_back(glm::vec3(vx, vy, vz),
                                       glm::vec4(red, green, blue, 1.0f),
-                                      glm::vec3(tx, ty, 0.0f));
+                                      glm::vec3(tx, ty, 0.0f),
+                                      glm::vec4(nx, ny, nz, 0.0f));
             }
         }
         return vertices;

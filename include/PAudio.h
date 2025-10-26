@@ -85,6 +85,5 @@ namespace umfeld {
     public:
         explicit PAudio(const AudioUnitInfo* device_info);
         void copy_input_buffer_to_output_buffer() const;
-        static void acquire_audio_buffer_per_sample(const PAudio* audio_device);
     };
 } // namespace umfeld
