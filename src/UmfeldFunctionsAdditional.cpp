@@ -371,6 +371,7 @@ namespace umfeld {
             warning("`audio()` must be called before or within `settings()`.");
             return;
         }
+        enable_audio    = true;
         audio_unit_info = info;
     }
 

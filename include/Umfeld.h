@@ -31,8 +31,6 @@
 #include "UmfeldFunctionsGraphics.h"
 #include "Subsystems.h"
 
-// #define UMFELD_DISABLE_DEPRECATED_AUDIO
-
 namespace umfeld {
 
     /* public variables used for *initialization only*  */
@@ -67,101 +65,8 @@ namespace umfeld {
     /**
      * @brief global pointer to current audio device. is set by audio subsystem after initialization.
      */
+    inline PAudio*       audio_device = nullptr;
     inline AudioUnitInfo audio_unit_info;
-    inline PAudio* audio_device        = nullptr; // TODO consider renaming `a` to `audio` … which would however conflict with the `audio` function
-    // [[deprecated("use 'audio_device' instead")]]
-    // inline bool    run_audio_in_thread = DEFAULT_AUDIO_RUN_IN_THREAD;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'audio_device' instead")]]
-    // #endif
-    //     inline PAudio*& a                   = audio_device;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline float* audio_input_buffer = nullptr;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline int8_t audio_input_channels = DEFAULT_INPUT_CHANNELS;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline float* audio_output_buffer = nullptr;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline int8_t audio_output_channels = DEFAULT_OUTPUT_CHANNELS;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline uint32_t audio_sample_rate = DEFAULT_SAMPLE_RATE;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline uint32_t audio_buffer_size = DEFAULT_AUDIO_BUFFER_SIZE;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline int audio_input_device_id = DEFAULT_AUDIO_DEVICE;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline std::string audio_input_device_name = DEFAULT_AUDIO_DEVICE_NAME;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline int audio_output_device_id = DEFAULT_AUDIO_DEVICE;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'void audioEvent(const PAudio& audio) {}' instead")]]
-    // #endif
-    //     inline std::string audio_output_device_name = DEFAULT_AUDIO_DEVICE_NAME;
-    //     // NOTE duplicate variables for backward compatibility
-    //     // ReSharper disable CppDeprecatedEntity
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use 'run_audio_in_thread' instead")]]
-    // #endif
-    //     inline bool& audio_threaded = run_audio_in_thread;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_input_buffer instead")]]
-    // #endif
-    //     inline float*& input_buffer = audio_input_buffer;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_input_channels instead")]]
-    // #endif
-    //     inline int8_t& input_channels = audio_input_channels;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_output_buffer instead")]]
-    // #endif
-    //     inline float*& output_buffer = audio_output_buffer;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_output_channels instead")]]
-    // #endif
-    //     inline int8_t& output_channels = audio_output_channels;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_sample_rate instead")]]
-    // #endif
-    //     inline uint32_t& sample_rate = audio_sample_rate;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_buffer_size instead")]]
-    // #endif
-    //     inline uint32_t& buffer_size = audio_buffer_size;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_input_device_id instead")]]
-    // #endif
-    //     inline int& input_device_id = audio_input_device_id;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_input_device_name instead")]]
-    // #endif
-    //     inline std::string& input_device_name = audio_input_device_name;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_output_device_id instead")]]
-    // #endif
-    //     inline int& output_device_id = audio_output_device_id;
-    // #ifndef UMFELD_DISABLE_DEPRECATED_AUDIO
-    //     [[deprecated("use audio_output_device_name instead")]]
-    // #endif
-    //     inline std::string& output_device_name = audio_output_device_name;
-    //     // ReSharper restore CppDeprecatedEntity
 
     /* --- graphics --- */
     inline PGraphics* g                    = nullptr;
@@ -185,7 +90,6 @@ namespace umfeld {
     inline int        depth_buffer_depth   = 24;
     inline int        stencil_buffer_depth = 8;
     inline bool       double_buffered      = true;
-
 
     /* public variables *mainly for internal use* */
 
