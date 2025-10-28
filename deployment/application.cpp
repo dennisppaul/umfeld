@@ -14,6 +14,7 @@ void settings() {
 }
 
 void setup() {
+    colorMode(RGB, 1.0, 1.0, 1.0, 1.0);
     if (!resource_file_exists("RobotoMono-Regular.ttf")) {
         println("cannot find required files at: ", sketchPath());
         println("... exiting");
