@@ -96,19 +96,6 @@ namespace umfeld {
         return result;
     }
 
-    // float map(const float value,
-    //           const float start0,
-    //           const float stop0,
-    //           const float start1,
-    //           const float stop1) {
-    //     const float a = value - start0;
-    //     const float b = stop0 - start0;
-    //     const float c = stop1 - start1;
-    //     const float d = a / b;
-    //     const float e = d * c;
-    //     return e + start1;
-    // }
-
     template<typename T>
     T mapT(const T value,
            const T start0,

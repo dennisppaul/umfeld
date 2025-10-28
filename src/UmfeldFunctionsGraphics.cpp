@@ -40,7 +40,7 @@ namespace umfeld {
     }
 
     color_t color(const float gray) {
-        if (g == nullptr) { return color_pack_f(gray, gray, gray, 1.0f); }
+        if (g == nullptr) { return color_pack_f(gray, gray, gray, DEFAULT_BACKGROUND_COLOR); }
         return g->color(gray);
     }
 
@@ -50,7 +50,7 @@ namespace umfeld {
     }
 
     color_t color(const float v1, const float v2, const float v3) {
-        if (g == nullptr) { return color_pack_f(v1, v2, v3, 1.0f); }
+        if (g == nullptr) { return color_pack_f(v1, v2, v3, DEFAULT_BACKGROUND_COLOR); }
         return g->color(v1, v2, v3);
     }
 

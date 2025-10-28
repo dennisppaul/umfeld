@@ -62,7 +62,7 @@ namespace umfeld {
     static constexpr int      DEFAULT_BYTES_PER_PIXELS      = 4;
     static constexpr int      DEFAULT_SPHERE_RESOLUTION     = 15;
     static constexpr uint32_t DEFAULT_BACKGROUND_COLOR      = 0x202020FF;
-    static constexpr float    DEFAULT_COLOR_RANGE           = 1.0f;
+    static constexpr float    DEFAULT_COLOR_RANGE           = 255.0f;
     static constexpr int      AUDIO_DEVICE_FIND_BY_NAME     = -2;
     static constexpr int      AUDIO_DEVICE_NOT_FOUND        = -3;
     static constexpr int      AUDIO_UNIT_NOT_INITIALIZED    = -4;
