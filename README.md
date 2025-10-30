@@ -1,3 +1,5 @@
+⚠️ THE PROJECT HAS MOVED TO CODEBERG.ORG [https://codeberg.org/Umfeld](https://codeberg.org/Umfeld) ⚠️
+
 ![umfeld-logotype-3D](assets/umfeld-logotype.png)
 
 *Umfeld* is a C++ environment for audio- and graphics-based applications, inspired by the [Processing.org](https://processing.org/) environment.
